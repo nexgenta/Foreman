@@ -29,7 +29,7 @@
 
 @implementation NGForemanDelegate
 
-- (void)openPath:(NSString *)path
+/* - (void)openPath:(NSString *)path
 {
 	NGConstructionProject *controller;
 	
@@ -58,6 +58,14 @@
 	{
 		[self openPath:[panel filename]];
 	}
+}
+*/
+
+- (BOOL) applicationShouldOpenUntitledFile:(NSApplication *) sender
+{
+	(void) sender;
+	
+	return NO;
 }
 
 - (void) launchItem:(NGFileInfo *)item
@@ -99,6 +107,7 @@
 	[[NSWorkspace sharedWorkspace] openFile:[item path]];
 }
 
+/* File > New Project from Folder… */
 - (IBAction) openFolder:(id)sender
 {
 	

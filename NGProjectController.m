@@ -27,9 +27,9 @@
 
 @implementation NGProjectController
 
-- (id) init
+- (id) initWithWindow:(NSWindow *) window
 {
-	if((self = [super initWithWindowNibName:@"ProjectWindow" owner:self]))
+	if((self = [super initWithWindow:window]))
 	{
 		rootItems = [[NSMutableArray alloc] init];		
 	}
@@ -50,26 +50,32 @@
 	NSTableColumn* col;
 	
 	[super awakeFromNib];
+	/* Dirty hack to avoid a warning when the window is in fact a panel */
+	[self setWindow:controllingPanel];
 	col = [mFolderTable tableColumnWithIdentifier:@"name"];
 	[mFolderTable setSortDescriptors:[NSArray arrayWithObject:[col sortDescriptorPrototype]]];
 	[mFolderTable setTarget:self];
 	[mFolderTable setDoubleAction:@selector(doubleAction:)];
+	if([self document])
+	{
+		[[self document] windowControllerDidLoadNib:self];
+	}
 }
 
 - (void) windowDidLoad
 {
 	[super windowDidLoad];
 	[controllingPanel setCollectionBehavior:NSWindowCollectionBehaviorCanJoinAllSpaces];
-	if(![self document])
-	{
-		/* Dirty hack — window is never by default set if there's no document */
-		[self setWindow:controllingPanel];
-	}
 	if(projectURL)
 	{
 		[controllingPanel setTitleWithRepresentedFilename:[projectURL path]];
 	}
 	[self expandRoots];
+}
+
+- (void) showWindow:(id) sender
+{
+	[[self window] makeKeyAndOrderFront:sender];
 }
 
 - (BOOL)validateUserInterfaceItem:(id <NSValidatedUserInterfaceItem>)item
@@ -81,9 +87,11 @@
 	{
 		if ([QLPreviewPanel sharedPreviewPanelExists] && [[QLPreviewPanel sharedPreviewPanel] isVisible])
 		{
+			/* XXX i18n */
 			[menuItem setTitle:@"Hide Quick Look"];
 			return YES;
 		}
+		/* XXX i18n */
 		[menuItem setTitle:@"Quick Look"];
 		if([mFolderTable selectedRow] == -1)
 		{

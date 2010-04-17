@@ -34,71 +34,94 @@
 
 @interface NGConstructionProject (Private)
 
-- (void) windowWillClose:(NSNotification *)notification;
 - (NSArray *) rootPathsForProjectWithHint:(NSURL *)specified;
 
 @end
 
 @implementation NGConstructionProject
 
-- (id) initWithURL:(NSURL *)url
+- (NSString *) windowNibName
 {
-	id plist;
+	return @"ProjectWindow";
+
+}
+
+- (void) makeWindowControllers
+{
+	[self addWindowController:[[NGProjectController alloc] initWithWindowNibName:[self windowNibName]]];
+}
+
+- (BOOL)readFromURL:(NSURL *)url ofType:(NSString *)typeName error:(NSError **)outError
+{
+	id plist, dict, item;
 	NGFileInfo *info;
 	NSString *projectPlistPath;
+	
+	info = [[NGFileInfo alloc] initWithURL:url];
+	if([info conformsToType:NGConstructionProjectUTI])
+	{
+		projectPlistPath = [[[url path] stringByAppendingPathComponent:@"Contents"] stringByAppendingPathComponent:@"Info.plist"];
+		if((plist = [NSDictionary dictionaryWithContentsOfFile:projectPlistPath]))
+		{
+			if((dict = [plist objectForKey:NGConstructionProjectInfoPlistKey]) && [dict isKindOfClass:[NSDictionary class]])
+			{
+				if((item = [dict objectForKey:@"Version"]) && NSOrderedSame == [NGConstructionProjectVersion1 caseInsensitiveCompare:item])
+				{						
+					projectDictionary = [dict mutableCopy];
+					projectFile = [url retain];
+					url = nil;
+				}
+				else
+				{
+					NSLog(@"Version key does not exist or is not %@", NGConstructionProjectVersion1);
+				}
+				
+			}
+			else
+			{
+				NSLog(@"Project Info.plist dictionary does not contain %@", NGConstructionProjectInfoPlistKey);
+			}
+			
+		}
+	}
+	if(!projectDictionary)
+	{
+		projectDictionary = [[NSMutableDictionary alloc] init];
+	}
+	if(url)
+	{
+		hintURL = [url retain];
+	}
+	return YES;
+}
+
+- (void) windowControllerDidLoadNib:(NSWindowController *) windowController
+{
 	NGProjectController *controller;
 	
-	if((self = [super init]))
+	[super windowControllerDidLoadNib:windowController];
+	if([windowController isKindOfClass:[NGProjectController class]])
 	{
-		if(!(controller = [[NGProjectController alloc] init]))
-		{
-			NSLog(@"Failed to create NGProjectController instance");
-			[self dealloc];
-			return nil;
-		}
-		info = [[NGFileInfo alloc] initWithURL:url];
-		if([info conformsToType:NGConstructionProjectUTI])
-		{
-			projectPlistPath = [[[url path] stringByAppendingPathComponent:@"Contents"] stringByAppendingPathComponent:@"Info.plist"];
-			if((plist = [NSDictionary dictionaryWithContentsOfFile:projectPlistPath]))
-			{
-				projectDictionary = [plist mutableCopy];
-				projectFile = [url retain];
-				url = nil;
-			}
-		}
-		if(!projectDictionary)
-		{
-			projectDictionary = [[NSMutableDictionary alloc] init];
-		}
-		[controller setProjectRoots:[self rootPathsForProjectWithHint:url]];
+		controller = (NGProjectController *) windowController;
+		[controller setProjectRoots:[self rootPathsForProjectWithHint:hintURL]];
 		if(projectFile)
 		{
 			[controller setProjectURL:projectFile];
 		}
 		[controller showWindow:self];
 	}
-	return self;
-}
+}	
 
 - (void) dealloc
 {
-	[self setDelegate:nil];
 	[projectDictionary release];
 	[userDictionary release];
 	[projectFile release];
+	[hintURL release];
 	[super dealloc];
 }
 
-- (void) setDelegate:(id) aDel
-{
-	mDelegateRef = aDel;
-}
-
-- (id) delegate
-{
-	return mDelegateRef;
-}
+/*
 
 - (void) windowWillClose:(NSNotification *)notification
 {
@@ -115,6 +138,7 @@
 	[panel setCanCreateDirectories:YES];
 	[panel runModal];
 }
+*/
 
 - (NSArray *) rootPathsForProjectWithHint:(NSURL *)specified
 {

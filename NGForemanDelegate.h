@@ -32,8 +32,8 @@
 {
 }
 
-- (void) openPanelDidEnd:(NSOpenPanel*) panel returnCode:(int) returnCode contextInfo:(void *) contextInfo;
-- (void) folderBrowser:(NGConstructionProject *) browser didSelectItem:(NGFileInfo *) item;
+/* - (void) openPanelDidEnd:(NSOpenPanel*) panel returnCode:(int) returnCode contextInfo:(void *) contextInfo;
+- (void) folderBrowser:(NGConstructionProject *) browser didSelectItem:(NGFileInfo *) item; */
 - (void) launchItem:(NGFileInfo *)item;
 - (IBAction) openFolder:(id)sender;
 

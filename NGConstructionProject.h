@@ -37,19 +37,15 @@
 
 #define NGConstructionProjectVersion1 @"6B4E316B-93C6-4294-8A49-DC66D47DA304"
 
-@interface NGConstructionProject : NSObject <QLPreviewPanelDelegate>
+@interface NGConstructionProject : NSDocument
 {
 	IBOutlet id	mDelegateRef;
 	
 	NSURL *projectFile;
+	NSURL *hintURL;
 	NSMutableDictionary *projectDictionary;
 	NSMutableDictionary *userDictionary;
 }
-
-- (id) initWithURL:(NSURL *)url;
-
-- (void) setDelegate:(id) aDel;
-- (id) delegate;
 
 @end
 
