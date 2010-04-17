@@ -92,6 +92,73 @@
 	{
 		hintURL = [url retain];
 	}
+	if(!projectFile)
+	{
+		[self setFileURL:nil];
+	}
+	[self setFileType:NGConstructionProjectUTI];
+	return YES;
+}
+
+- (void) saveDocument:(id) sender
+{
+	if(projectFile)
+	{
+		[super saveDocument:sender];
+	}
+	else
+	{
+		[super saveDocumentAs:sender];
+	}
+}
+
+- (BOOL) writeToURL:(NSURL *)url ofType:(NSString *)typeName error:(NSError **)outError
+{
+	NSString *contents;
+	NSMutableDictionary *dict;
+	NSEnumerator *e;
+	NSArray *roots;
+	NSMutableArray *rootList;
+	NSData *data;
+	id u;
+	BOOL changed;
+	
+	contents = [[url path] stringByAppendingPathComponent:@"Contents"];
+	if(NO == [[NSFileManager defaultManager] createDirectoryAtPath:contents withIntermediateDirectories:YES attributes:nil error:outError])
+	{
+		return NO;
+	}
+	dict = [NSMutableDictionary dictionaryWithCapacity:10];
+	[projectDictionary setObject:NGConstructionProjectVersion1 forKey:@"Version"];
+	roots = [projectDictionary objectForKey:@"Roots"];
+	rootList = [NSMutableArray arrayWithCapacity:[roots count]];
+	changed = NO;
+	e = [roots objectEnumerator];
+	while((u = [e nextObject]))
+	{
+		if([u isKindOfClass:[NSURL class]])
+		{
+			[rootList addObject:[u path]];
+			changed = YES;
+		}
+		else
+		{
+			[rootList addObject:u];
+		}
+	}
+	if(changed)
+	{
+		[projectDictionary setObject:rootList forKey:@"Roots"];
+	}
+	[dict setObject:projectDictionary forKey:NGConstructionProjectInfoPlistKey];
+	if(nil == (data = [NSPropertyListSerialization dataWithPropertyList:dict format:NSPropertyListXMLFormat_v1_0 options:0 error:outError]))
+	{
+		return NO;
+	}
+	if(![data writeToFile:[contents stringByAppendingPathComponent:@"Info.plist"] options:0 error:outError])
+	{
+		return NO;
+	}
 	return YES;
 }
 
@@ -104,10 +171,6 @@
 	{
 		controller = (NGProjectController *) windowController;
 		[controller setProjectRoots:[self rootPathsForProjectWithHint:hintURL]];
-		if(projectFile)
-		{
-			[controller setProjectURL:projectFile];
-		}
 		[controller showWindow:self];
 	}
 }	
@@ -121,24 +184,14 @@
 	[super dealloc];
 }
 
-/*
-
-- (void) windowWillClose:(NSNotification *)notification
+- (BOOL) isDocumentEdited
 {
-	NSLog(@"[NGConstructionProject windowWillClose]");
-	[self dealloc];
+	if(projectFile)
+	{
+		return NO;
+	}
+	return YES;
 }
-
-- (IBAction) saveDocumentAs:(id)sender
-{
-	NSSavePanel *panel;
-	
-	panel = [NSSavePanel savePanel];
-	[panel setTitle:@"Save Project"];
-	[panel setCanCreateDirectories:YES];
-	[panel runModal];
-}
-*/
 
 - (NSArray *) rootPathsForProjectWithHint:(NSURL *)specified
 {
@@ -171,79 +224,5 @@
 	}
 	return roots;
 }
-
-
-/* - (void) selectPath:(NSString*) path
-{
-	// attempts to select the path. If the path isn't rooted at the current root, does nothing.
-	// the outline view is expanded as necessary to display the selected item.
-	
-	NSString* rootPath = [self rootPath];
-	
-	// if the path is shorter it can't contain the root...
-	
-	if ([path length] >= [rootPath length])
-	{
-		NSRange cr = [path rangeOfString:rootPath];
-		
-		if( cr.location == 0 && cr.length == [rootPath length])
-		{
-			// given path is below the current root. Now check it's a directory.
-			
-			BOOL isDir;
-			
-			if([[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDir])
-			{
-				if( isDir )
-				{
-					// OK, all checks out, expand the table from the root down until the item can be viewed
-					
-					if([path isEqualToString:rootPath])
-						[mFolderTable selectRowIndexes:[NSIndexSet indexSetWithIndex:0] byExtendingSelection:NO];
-					else
-					{
-						NSString*		ss = [path substringFromIndex:NSMaxRange(cr)];
-						NSArray*		parts = [ss componentsSeparatedByString:@"/"];
-						NSEnumerator*	iter = [parts objectEnumerator];
-						NSString*		part;
-						NGFileInfo*	fi = mRootInfo;
-						
-						while(( part = [iter nextObject]))
-						{
-							[mFolderTable expandItem:fi];
-							
-							// look through the subfolders for the folder having the name == part
-							
-							if([part length] > 0 )
-							{
-								NSEnumerator*	subIter = [[fi children] objectEnumerator];
-								NGFileInfo*	sub;
-								BOOL			found = NO;
-								
-								while(( sub = [subIter nextObject]))
-								{
-									if([part isEqualToString:[sub name]])
-									{
-										fi = sub;
-										found = YES;
-										break;
-									}
-								}
-								
-								if( !found )
-									return;
-							}
-						}
-						
-						int rowIndex = [mFolderTable rowForItem:fi];
-						[mFolderTable selectRowIndexes:[NSIndexSet indexSetWithIndex:rowIndex] byExtendingSelection:NO];
-						[mFolderTable scrollRowToVisible:rowIndex];
-					}
-				}
-			}
-		}
-	}
-}
- */
 
 @end

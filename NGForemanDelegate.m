@@ -110,7 +110,26 @@
 /* File > New Project from Folder… */
 - (IBAction) openFolder:(id)sender
 {
+	NSOpenPanel *openPanel;
+	NSEnumerator *e;
+	NSURL *u;
+	NSError *err;
 	
+	openPanel = [NSOpenPanel openPanel];
+	[openPanel setCanChooseFiles:NO];
+	[openPanel setCanChooseDirectories:YES];
+	[openPanel setAllowsMultipleSelection:YES];
+	if(NSFileHandlingPanelOKButton == [openPanel runModal])
+	{
+		e = [[openPanel URLs] objectEnumerator];
+		while((u = [e nextObject]))
+		{
+			if(nil == [[NSDocumentController sharedDocumentController] openDocumentWithContentsOfURL:u display:YES error:&err])
+			{
+				NSLog(@"openFolder: %@ - %@", u, err);
+			}
+		}
+	}
 }
 
 @end

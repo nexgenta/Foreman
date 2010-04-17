@@ -41,7 +41,6 @@
 	[mFolderTable setDataSource:nil];
 	[mFolderTable setDelegate:nil];
 	[rootItems release];
-	[projectURL release];
 	[super dealloc];
 }
 
@@ -50,8 +49,6 @@
 	NSTableColumn* col;
 	
 	[super awakeFromNib];
-	/* Dirty hack to avoid a warning when the window is in fact a panel */
-	[self setWindow:controllingPanel];
 	col = [mFolderTable tableColumnWithIdentifier:@"name"];
 	[mFolderTable setSortDescriptors:[NSArray arrayWithObject:[col sortDescriptorPrototype]]];
 	[mFolderTable setTarget:self];
@@ -65,11 +62,8 @@
 - (void) windowDidLoad
 {
 	[super windowDidLoad];
-	[controllingPanel setCollectionBehavior:NSWindowCollectionBehaviorCanJoinAllSpaces];
-	if(projectURL)
-	{
-		[controllingPanel setTitleWithRepresentedFilename:[projectURL path]];
-	}
+	[[self window] setCollectionBehavior:NSWindowCollectionBehaviorCanJoinAllSpaces];
+	[self synchronizeWindowTitleWithDocumentName];
 	[self expandRoots];
 }
 
@@ -101,27 +95,28 @@
 	return YES;
 }
 
+- (void)synchronizeWindowTitleWithDocumentName
+{
+	if([[self document] fileURL])
+	{
+		[[self window] setTitleWithRepresentedFilename:[[[self document] fileURL] path]];
+	}
+	else if([rootItems count])
+	{
+		[[self window] setTitleWithRepresentedFilename:[[[rootItems objectAtIndex:0] url] path]];
+	}
+	else
+	{
+		[super synchronizeWindowTitleWithDocumentName];
+	}
+}
+
 - (IBAction) doubleAction:(id)sender
 {
 	id selected;
 	
 	selected = [mFolderTable itemAtRow:[mFolderTable selectedRow]];
 	[[NSApplication sharedApplication] sendAction:@selector(launchItem:) to:nil from:selected];
-}
-
-- (NSURL *) projectURL
-{
-	return projectURL;
-}
-
-- (void) setProjectURL:(NSURL *)url
-{
-	[projectURL release];
-	projectURL = [url retain];
-	if([self isWindowLoaded])
-	{
-		[[self window] setTitleWithRepresentedFilename:[url path]];
-	}
 }
 
 - (void) setProjectRoots:(NSArray *)roots
@@ -141,6 +136,7 @@
 		[mFolderTable reloadData];
 		[mFolderTable selectRowIndexes:[NSIndexSet indexSetWithIndex:-1] byExtendingSelection:NO];
 		[self expandRoots];
+		[self synchronizeWindowTitleWithDocumentName];
 	}
 }
 

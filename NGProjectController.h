@@ -11,10 +11,8 @@
 
 @interface NGProjectController : NSWindowController {
 	IBOutlet NSOutlineView *mFolderTable;
-	IBOutlet NSWindow *controllingPanel;
 	IBOutlet NSMenuItem *quickLookItem;	
 	
-	NSURL *projectURL;
 	NSMutableArray *rootItems;
 	BOOL showBundlesAsFolders;
 	BOOL showInvisibles;
@@ -23,9 +21,6 @@
 }
 
 - (NSArray *) projectRoots;
-- (NSURL *) projectURL;
-
 - (void) setProjectRoots:(NSArray *) roots;
-- (void) setProjectURL:(NSURL *) url;
 
 @end
