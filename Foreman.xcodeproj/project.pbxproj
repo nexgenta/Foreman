@@ -23,6 +23,7 @@
 		CD7F58DE117A99000043F034 /* NGGroupFolderItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CD7F58DD117A99000043F034 /* NGGroupFolderItem.m */; };
 		CD7F591E117A9D0E0043F034 /* NGFileTreeItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CD7F591D117A9D0E0043F034 /* NGFileTreeItem.m */; };
 		CD7F59C0117AA3F80043F034 /* Manilla Folder.icns in Resources */ = {isa = PBXBuildFile; fileRef = CD7F59BF117AA3F80043F034 /* Manilla Folder.icns */; };
+		CDB4E7E1117BADD7006E2C59 /* Blueprint.icns in Resources */ = {isa = PBXBuildFile; fileRef = CDB4E7E0117BADD7006E2C59 /* Blueprint.icns */; };
 		CDB9ED93117744D500ECC047 /* ProjectWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = CDB9ED92117744D500ECC047 /* ProjectWindow.xib */; };
 		CDC21E9D1177A0D400DBB51F /* NGFileItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CDC21E9C1177A0D400DBB51F /* NGFileItem.m */; };
 		CDC22244117886F900DBB51F /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDC22243117886F900DBB51F /* Quartz.framework */; };
@@ -61,6 +62,7 @@
 		CD7F591C117A9D0E0043F034 /* NGFileTreeItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGFileTreeItem.h; sourceTree = "<group>"; };
 		CD7F591D117A9D0E0043F034 /* NGFileTreeItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NGFileTreeItem.m; sourceTree = "<group>"; };
 		CD7F59BF117AA3F80043F034 /* Manilla Folder.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = "Manilla Folder.icns"; sourceTree = "<group>"; };
+		CDB4E7E0117BADD7006E2C59 /* Blueprint.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Blueprint.icns; sourceTree = "<group>"; };
 		CDB9ED92117744D500ECC047 /* ProjectWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProjectWindow.xib; sourceTree = "<group>"; };
 		CDC21E8F11779F9300DBB51F /* Foreman.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Foreman.pch; sourceTree = "<group>"; };
 		CDC21E9B1177A0D400DBB51F /* NGFileItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGFileItem.h; sourceTree = "<group>"; };
@@ -152,6 +154,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				CDB4E7E0117BADD7006E2C59 /* Blueprint.icns */,
 				CD754666117B474E007AA930 /* Framework.tiff */,
 				CD754584117B1D4E007AA930 /* XcodeProject.icns */,
 				CD7F59BF117AA3F80043F034 /* Manilla Folder.icns */,
@@ -267,6 +270,7 @@
 				CD7F59C0117AA3F80043F034 /* Manilla Folder.icns in Resources */,
 				CD754585117B1D4E007AA930 /* XcodeProject.icns in Resources */,
 				CD754667117B474E007AA930 /* Framework.tiff in Resources */,
+				CDB4E7E1117BADD7006E2C59 /* Blueprint.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
