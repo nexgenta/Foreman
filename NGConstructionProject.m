@@ -241,7 +241,7 @@
 	}
 	if(hintURL)
 	{
-		return [NSArray arrayWithObject:[hintURL absoluteURL]];
+		return [NSArray arrayWithObject:hintURL];
 	}
 	return [NSArray array];
 }

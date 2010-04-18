@@ -30,7 +30,7 @@
 
 @implementation NGFileTreeItem
 
-+ (id) fileTreeItemWithData:(id)data matching:(NSPredicate *)matchPredicate notMatching:(NSPredicate *)antiPredicate includeFiles:(BOOL)files includeInvisibles:(BOOL)invisibles bundlesAsFolders:(BOOL)expandBundles
++ (id) fileTreeItemWithData:(id)data parent:(id)parent matching:(NSPredicate *)matchPredicate notMatching:(NSPredicate *)antiPredicate includeFiles:(BOOL)files includeInvisibles:(BOOL)invisibles bundlesAsFolders:(BOOL)expandBundles
 {
 	id entry, kind;
 	
@@ -51,14 +51,14 @@
 	}
 	if(entry)
 	{
-		entry = [[entry initWithData:data matching:matchPredicate notMatching:antiPredicate includeFiles:files includeInvisibles:invisibles bundlesAsFolders:expandBundles] autorelease];
+		entry = [[entry initWithData:data parent:parent matching:matchPredicate notMatching:antiPredicate includeFiles:files includeInvisibles:invisibles bundlesAsFolders:expandBundles] autorelease];
 	}
 	return entry;
 }
 
 + (id) fileTreeItemWithData:(id)data
 {
-	return [NGFileTreeItem fileTreeItemWithData:data matching:nil notMatching:nil includeFiles:YES includeInvisibles:NO bundlesAsFolders:NO];
+	return [NGFileTreeItem fileTreeItemWithData:data parent:nil matching:nil notMatching:nil includeFiles:YES includeInvisibles:NO bundlesAsFolders:NO];
 }
 
 + (NSString *) builtInImageNameForType:(NSString *)name
@@ -75,7 +75,7 @@
 	return nil;
 }
 
-- (id) initWithData:(id)data matching:(NSPredicate *)matchPredicate notMatching:(NSPredicate *)antiPredicate includeFiles:(BOOL)files includeInvisibles:(BOOL)invisibles bundlesAsFolders:(BOOL)expandBundles
+- (id) initWithData:(id)data parent:(id)parent matching:(NSPredicate *)matchPredicate notMatching:(NSPredicate *)antiPredicate includeFiles:(BOOL)files includeInvisibles:(BOOL)invisibles bundlesAsFolders:(BOOL)expandBundles
 {
 	id obj;
 	

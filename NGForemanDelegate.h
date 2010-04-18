@@ -32,9 +32,13 @@
 {
 }
 
-/* - (void) openPanelDidEnd:(NSOpenPanel*) panel returnCode:(int) returnCode contextInfo:(void *) contextInfo;
-- (void) folderBrowser:(NGConstructionProject *) browser didSelectItem:(NGFileInfo *) item; */
 - (void) launchItem:(NGFileTreeItem *)item;
 - (IBAction) openFolder:(id)sender;
+
+@end
+
+@interface NGForemanDelegate(Placeholders)
+
+- (IBAction) toggleQuickLookPreview:(id)sender;
 
 @end

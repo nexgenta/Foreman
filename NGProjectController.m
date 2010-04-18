@@ -40,7 +40,6 @@
 
 - (IBAction) doubleAction:(id)sender;
 - (IBAction) keyDown:(NSEvent *)event;
-- (IBAction) toggleQuickLookPreview:(id)sender;
 
 @end
 
@@ -148,15 +147,14 @@
 	e = [roots objectEnumerator];
 	while((u = [e nextObject]))
 	{
-		if((fi = [NGFileTreeItem fileTreeItemWithData:u]))
+		if((fi = [NGFileTreeItem fileTreeItemWithData:u parent:[self document] matching:nil notMatching:nil includeFiles:YES includeInvisibles:NO bundlesAsFolders:NO]))
 		{
 			[rootItems addObject:fi];
 		}
 		else
 		{
-			NSLog(@"+ filetreeItemWithData:");
+			NSLog(@"+ filetreeItemWithData failed");
 		}
-
 	}
 	if([self isWindowLoaded])
 	{
@@ -309,11 +307,6 @@
 }
 
 /* Quick Look preview panel support */
-
-- (IBAction) quickLookItem:(id)sender
-{
-	[self toggleQuickLookPreview:sender];
-}
 
 - (IBAction) toggleQuickLookPreview:(id)sender
 {

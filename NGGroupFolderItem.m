@@ -74,7 +74,7 @@
 			e = [children objectEnumerator];
 			while((data = [e nextObject]))
 			{
-				if((fi = [NGFileTreeItem fileTreeItemWithData:data matching:mPredicate notMatching:mAntiPredicate includeFiles:mIncludeFiles includeInvisibles:mIncludeInvisibles bundlesAsFolders:mBundlesAsFolders]))
+				if((fi = [NGFileTreeItem fileTreeItemWithData:data parent:self matching:mPredicate notMatching:mAntiPredicate includeFiles:mIncludeFiles includeInvisibles:mIncludeInvisibles bundlesAsFolders:mBundlesAsFolders]))
 				{
 					[childList addObject:fi];
 				}

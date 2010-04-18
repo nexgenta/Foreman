@@ -31,16 +31,36 @@
 
 @implementation NGFileItem
 
-- (id) initWithData:(id)data matching:(NSPredicate *)predicate notMatching:(NSPredicate *)antiPredicate includeFiles:(BOOL)files includeInvisibles:(BOOL)invisibles bundlesAsFolders:(BOOL)expandBundles;
+- (id) initWithData:(id)data parent:(id)parent matching:(NSPredicate *)predicate notMatching:(NSPredicate *)antiPredicate includeFiles:(BOOL)files includeInvisibles:(BOOL)invisibles bundlesAsFolders:(BOOL)expandBundles;
 {
-	NSURL *aURL;
+	NSURL *aURL, *parentURL, *fileReferenceURL;
 	NSString *path;
 	OSStatus err;
 	LSItemInfoRecord info;
 
+	parentURL = nil;
+	if(parent)
+	{
+		if([parent isKindOfClass:[NGFileTreeItem class]])
+		{
+			parentURL = [parent url];
+		}
+		else if([parent isKindOfClass:[NSDocument class]])
+		{
+			parentURL = [[parent fileURL] URLByDeletingLastPathComponent];
+		}
+	}
 	if([data isKindOfClass:[NSString class]])
 	{
-		aURL = [NSURL fileURLWithPath:[data stringByExpandingTildeInPath]];
+		data = [data stringByExpandingTildeInPath];
+		if(parentURL && (![data length] || [data characterAtIndex:0] != '/'))
+		{
+			aURL = [NSURL URLWithString:[[data stringByExpandingTildeInPath] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] relativeToURL:parentURL];
+		}
+		else
+		{
+			aURL = [NSURL fileURLWithPath:[data stringByExpandingTildeInPath]];			
+		}
 	}
 	else if([data isKindOfClass:[NSDictionary class]])
 	{
@@ -60,9 +80,20 @@
 		[self dealloc];
 		return nil;
 	}
-	if((self = [super initWithData:data matching:predicate notMatching:antiPredicate includeFiles:files includeInvisibles:invisibles bundlesAsFolders:expandBundles]))
+	if([parent isKindOfClass:[NSDocument class]])
+	{
+		if((fileReferenceURL = [[aURL absoluteURL] fileReferenceURL]))
+		{
+			aURL = fileReferenceURL;
+		}
+	}
+	if((self = [super initWithData:data parent:parent matching:predicate notMatching:antiPredicate includeFiles:files includeInvisibles:invisibles bundlesAsFolders:expandBundles]))
 	{
 		url = [aURL retain];
+		if(!(mParentURL = [[parentURL fileReferenceURL] retain]))
+		{
+			mParentURL = [parentURL retain];
+		}		
 		path = [aURL path];
 		mName = [[path lastPathComponent] retain];
 		displayName = [[[NSFileManager defaultManager] displayNameAtPath:path] retain];
@@ -101,6 +132,7 @@
 	[mName release];
 	[displayName release];
 	[url release];
+	[mParentURL release];
 	[mChildren release];
 	[mPredicate release];
 	[mAntiPredicate release];
@@ -221,9 +253,10 @@
 - (NSArray*) children
 {
 	NSEnumerator *iter;
-	NSString *sp;
 	NSURL *fp;
 	NGFileItem *fi;
+	NSDirectoryEnumerationOptions mask;
+	NSError *err;
 	
 	/* Lazily load the children of this entry */
 	
@@ -231,24 +264,33 @@
 	{
 		// search for subfolders at this path. Each one is stored in the array as a further GCFolderInfo object. Thus
 		// this self-assembles a tree of the folders from the initial root path.
-		
-		iter = [[[NSFileManager defaultManager] directoryContentsAtPath:[self path]] objectEnumerator];		
-		mChildren = [[NSMutableArray alloc] init];
-		while((sp = [iter nextObject]))
+		mask = 0;
+		if(!mIncludeInvisibles)
 		{
-			fp = [[self url] URLByAppendingPathComponent:sp];
-			if(!(fi = [[NGFileItem alloc] initWithData:fp matching:mPredicate notMatching:mAntiPredicate includeFiles:mIncludeFiles includeInvisibles:mIncludeInvisibles bundlesAsFolders:mBundlesAsFolders]))
+			mask = NSDirectoryEnumerationSkipsHiddenFiles;
+		}
+		if((iter = [[[NSFileManager defaultManager] contentsOfDirectoryAtURL:[self url] includingPropertiesForKeys:[NSArray arrayWithObjects:NSURLNameKey, nil] options:mask error:&err] objectEnumerator]))
+		{			
+			mChildren = [[NSMutableArray alloc] init];
+			while((fp = [iter nextObject]))
 			{
-				continue;
+				if(!(fi = [[NGFileItem alloc] initWithData:fp parent:self matching:mPredicate notMatching:mAntiPredicate includeFiles:mIncludeFiles includeInvisibles:mIncludeInvisibles bundlesAsFolders:mBundlesAsFolders]))
+				{
+					continue;
+				}
+				if((NO == mIncludeFiles && NO == [fi isFolder]) ||
+				   (NO == mIncludeInvisibles && NO == [fi isVisible]) ||
+				   (NO == [fi matchesPredicate]))
+			   {
+					[fi release];
+					continue;
+				}
+				[mChildren addObject:fi];
 			}
-			if((NO == mIncludeFiles && NO == [fi isFolder]) ||
-			   (NO == mIncludeInvisibles && NO == [fi isVisible]) ||
-			   (NO == [fi matchesPredicate]))
-		   {
-				[fi release];
-				continue;
-			}
-			[mChildren addObject:fi];
+		}
+		else
+		{
+			NSLog(@"NGFileItem -children - contentsOfDirectoryAtURL: %@", err);
 		}
 	}	
 	return mChildren;
@@ -272,7 +314,40 @@
 
 - (id) representationForPropertyList
 {
-	return [url path];
+	NSArray *parent, *me;
+	NSMutableArray *rel;
+	NSEnumerator *pIter, *mIter;
+	NSString *p, *m;
+	int matches, c;
+	
+	if(mParentURL)
+	{
+		parent = [[mParentURL filePathURL] pathComponents];
+		me = [[url filePathURL] pathComponents];
+		if(parent && me)
+		{
+			pIter = [parent objectEnumerator];
+			mIter = [me objectEnumerator];
+			while((p = [pIter nextObject]) && (m = [mIter nextObject]) && NSOrderedSame == [p compare:m])
+			{
+				matches++;
+			}
+			if(matches)
+			{
+				rel = [NSMutableArray arrayWithCapacity:([parent count] - matches) + ([me count] - matches)];
+				for(c = matches; c < [parent count]; c++)
+				{
+					[rel addObject:@".."];
+				}
+				for(c = matches; c < [me count]; c++)
+				{
+					[rel addObject:[me objectAtIndex:c]];
+				}
+				return [rel componentsJoinedByString:@"/"];
+			}
+		}
+	}
+	return [[url filePathURL] path];
 }
 
 @end

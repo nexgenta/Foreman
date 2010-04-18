@@ -36,12 +36,12 @@
 	NSPredicate *mAntiPredicate;	
 }
 
-+ (id) fileTreeItemWithData:(id)data matching:(NSPredicate *)matchPredicate notMatching:(NSPredicate *)antiPredicate includeFiles:(BOOL)files includeInvisibles:(BOOL)invisibles bundlesAsFolders:(BOOL)expandBundles;
++ (id) fileTreeItemWithData:(id)data parent:(id)parent matching:(NSPredicate *)matchPredicate notMatching:(NSPredicate *)antiPredicate includeFiles:(BOOL)files includeInvisibles:(BOOL)invisibles bundlesAsFolders:(BOOL)expandBundles;
 + (id) fileTreeItemWithData:(id)data;
 
 + (NSString *) builtInImageNameForType:(NSString *)name;
 
-- (id) initWithData:(id)data matching:(NSPredicate *)predicate notMatching:(NSPredicate *)antiPredicate includeFiles:(BOOL)files includeInvisibles:(BOOL)invisibles bundlesAsFolders:(BOOL)expandBundles;
+- (id) initWithData:(id)data parent:(id)parent matching:(NSPredicate *)predicate notMatching:(NSPredicate *)antiPredicate includeFiles:(BOOL)files includeInvisibles:(BOOL)invisibles bundlesAsFolders:(BOOL)expandBundles;
 
 - (BOOL) isFile;
 - (BOOL) isFolder;

@@ -29,38 +29,6 @@
 
 @implementation NGForemanDelegate
 
-/* - (void)openPath:(NSString *)path
-{
-	NGConstructionProject *controller;
-	
-	if((controller = [[NGConstructionProject alloc] initWithURL:[NSURL fileURLWithPath:path]]))
-	{
-		[controller setDelegate:self];
-	}
-}
-
-- (BOOL)application:(NSApplication *)sender openFile:(NSString *)path
-{
-	(void) sender;
-	
-	[self openPath:path];
-
-	return true;
-}
-
-- (void) folderBrowser:(NGConstructionProject *) browser didSelectItem:(NGFileInfo*) item
-{
-}
-
-- (void) openPanelDidEnd:(NSOpenPanel*) panel returnCode:(int) returnCode contextInfo:(void*) contextInfo
-{
-	if( returnCode == NSOKButton )
-	{
-		[self openPath:[panel filename]];
-	}
-}
-*/
-
 - (BOOL) applicationShouldOpenUntitledFile:(NSApplication *) sender
 {
 	(void) sender;
