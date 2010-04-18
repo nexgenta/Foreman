@@ -35,6 +35,8 @@
 @interface NGConstructionProject (Private)
 
 - (NSArray *) rootPathsForProjectWithHint:(NSURL *)specified;
+- (void)windowDidMoveResize:(NSNotification *)notification;
+- (void)shouldSaveSoon:(id)sender;
 
 @end
 
@@ -55,7 +57,7 @@
 {
 	id plist, dict, item;
 	NGFileInfo *info;
-	NSString *projectPlistPath;
+	NSString *projectPlistPath, *userFileName;
 	
 	info = [[NGFileInfo alloc] initWithURL:url];
 	if([info conformsToType:NGConstructionProjectUTI])
@@ -69,7 +71,18 @@
 				{						
 					projectDictionary = [dict mutableCopy];
 					projectFile = [url retain];
+					userFileName = [NSString stringWithFormat:@"user-%@.plist", NSUserName()];
+					projectPlistPath = [[[url path] stringByAppendingPathComponent:@"Contents"] stringByAppendingPathComponent:userFileName];
 					url = nil;
+					if((plist = [NSDictionary dictionaryWithContentsOfFile:projectPlistPath]))
+					{
+						userDictionary = [plist retain];
+					}
+					else
+					{
+						NSLog(@"Failed to load %@", userFileName);
+					}
+
 				}
 				else
 				{
@@ -112,14 +125,29 @@
 	}
 }
 
+- (void)canCloseDocumentWithDelegate:(id)delegate shouldCloseSelector:(SEL)shouldCloseSelector contextInfo:(void *)contextInfo
+{
+	if(projectFile)
+	{
+		[self saveDocument:self];
+	}
+	[super canCloseDocumentWithDelegate:delegate shouldCloseSelector:shouldCloseSelector contextInfo:contextInfo];
+}
+
+- (void)shouldSaveSoon:(id)sender
+{
+	/* Do nothing, for the time being */
+}
+
 - (BOOL) writeToURL:(NSURL *)url ofType:(NSString *)typeName error:(NSError **)outError
 {
-	NSString *contents;
+	NSString *contents, *userFileName;
 	NSMutableDictionary *dict;
 	NSEnumerator *e;
 	NSArray *roots;
 	NSMutableArray *rootList;
 	NSData *data;
+	NSWindow *window;
 	id u;
 	BOOL changed;
 	
@@ -159,21 +187,56 @@
 	{
 		return NO;
 	}
+	if(!userDictionary)
+	{
+		userDictionary = [[NSMutableDictionary alloc] init];
+	}
+	window = [[[self windowControllers] objectAtIndex:0] window];
+	[userDictionary setObject:[window stringWithSavedFrame] forKey:@"NSWindow Frame"];
+	[userDictionary setObject:[[window toolbar] configurationDictionary] forKey:@"NSToolbar"];
+	userFileName = [NSString stringWithFormat:@"user-%@.plist", NSUserName()];
+	if(nil == (data = [NSPropertyListSerialization dataWithPropertyList:userDictionary format:NSPropertyListXMLFormat_v1_0 options:0 error:outError]))
+	{
+		return NO;
+	}
+	if(![data writeToFile:[contents stringByAppendingPathComponent:userFileName] options:0 error:outError])
+	{
+		return NO;
+	}
+	[projectFile release];
+	projectFile = [url retain];
 	return YES;
 }
 
 - (void) windowControllerDidLoadNib:(NSWindowController *) windowController
 {
 	NGProjectController *controller;
-	
+	id info;
+	NSWindow *window;
+
 	[super windowControllerDidLoadNib:windowController];
 	if([windowController isKindOfClass:[NGProjectController class]])
 	{
 		controller = (NGProjectController *) windowController;
 		[controller setProjectRoots:[self rootPathsForProjectWithHint:hintURL]];
-		[controller showWindow:self];
 	}
+	window = [windowController window];
+	if((info = [userDictionary objectForKey:@"NSWindow Frame"]))
+	{
+		[window setFrameFromString:info];
+	}
+	if((info = [userDictionary objectForKey:@"NSToolbar"]))
+	{
+		[[window toolbar] setConfigurationFromDictionary:info];
+	}
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowDidMoveResize:) name:NSWindowDidMoveNotification object:window];
+	[windowController showWindow:self];
 }	
+
+- (void) windowDidMoveResize:(NSNotification *)notification
+{
+	[self shouldSaveSoon:self];
+}
 
 - (void) dealloc
 {

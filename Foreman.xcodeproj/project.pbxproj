@@ -15,6 +15,7 @@
 		BFCE79500F590B3600C20648 /* GCIconTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BFCE794E0F590B3600C20648 /* GCIconTextFieldCell.m */; };
 		BFCE79690F590D0800C20648 /* NGForemanDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BFCE79680F590D0800C20648 /* NGForemanDelegate.m */; };
 		CD056F75117916E8004A124F /* ConstructionProject.icns in Resources */ = {isa = PBXBuildFile; fileRef = CD056F74117916E8004A124F /* ConstructionProject.icns */; };
+		CD7F58A9117A7F700043F034 /* NGToolbarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CD7F58A8117A7F700043F034 /* NGToolbarItem.m */; };
 		CDB9ED93117744D500ECC047 /* ProjectWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = CDB9ED92117744D500ECC047 /* ProjectWindow.xib */; };
 		CDC21E9D1177A0D400DBB51F /* NGFileInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CDC21E9C1177A0D400DBB51F /* NGFileInfo.m */; };
 		CDC22244117886F900DBB51F /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDC22243117886F900DBB51F /* Quartz.framework */; };
@@ -40,6 +41,8 @@
 		BFCE79670F590D0800C20648 /* NGForemanDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGForemanDelegate.h; sourceTree = "<group>"; };
 		BFCE79680F590D0800C20648 /* NGForemanDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NGForemanDelegate.m; sourceTree = "<group>"; };
 		CD056F74117916E8004A124F /* ConstructionProject.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = ConstructionProject.icns; sourceTree = "<group>"; };
+		CD7F58A7117A7F700043F034 /* NGToolbarItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGToolbarItem.h; sourceTree = "<group>"; };
+		CD7F58A8117A7F700043F034 /* NGToolbarItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NGToolbarItem.m; sourceTree = "<group>"; };
 		CDB9ED92117744D500ECC047 /* ProjectWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProjectWindow.xib; sourceTree = "<group>"; };
 		CDC21E8F11779F9300DBB51F /* Foreman.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Foreman.pch; sourceTree = "<group>"; };
 		CDC21E9B1177A0D400DBB51F /* NGFileInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGFileInfo.h; sourceTree = "<group>"; };
@@ -83,6 +86,8 @@
 				CDC224D81178CC0200DBB51F /* NGPanel.m */,
 				CDC225081178D99700DBB51F /* NGQLOutlineView.h */,
 				CDC225091178D99700DBB51F /* NGQLOutlineView.m */,
+				CD7F58A7117A7F700043F034 /* NGToolbarItem.h */,
+				CD7F58A8117A7F700043F034 /* NGToolbarItem.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -224,6 +229,7 @@
 				CDC222BF1178984B00DBB51F /* NGProjectController.m in Sources */,
 				CDC224D91178CC0200DBB51F /* NGPanel.m in Sources */,
 				CDC2250A1178D99700DBB51F /* NGQLOutlineView.m in Sources */,
+				CD7F58A9117A7F700043F034 /* NGToolbarItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

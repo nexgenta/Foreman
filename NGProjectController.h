@@ -23,4 +23,6 @@
 - (NSArray *) projectRoots;
 - (void) setProjectRoots:(NSArray *) roots;
 
+- (IBAction) toggleQuickLookPreview:(id)sender;
+
 @end

@@ -77,7 +77,7 @@
 	NSMenuItem *menuItem;
 	
 	menuItem = [(id)item isKindOfClass:[NSMenuItem class]] ? (NSMenuItem *) item : nil;
-	if([item action] == @selector(quickLookItem:))
+	if([item action] == @selector(quickLookItem:) || [item action] == @selector(toggleQuickLookPreview:))
 	{
 		if ([QLPreviewPanel sharedPreviewPanelExists] && [[QLPreviewPanel sharedPreviewPanel] isVisible])
 		{
