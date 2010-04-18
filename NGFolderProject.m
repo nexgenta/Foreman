@@ -24,25 +24,20 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS 
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#import <Cocoa/Cocoa.h>
-#import <Quartz/Quartz.h>
 
-@interface NGProjectController : NSWindowController {
-	IBOutlet NSOutlineView *mFolderTable;
-	IBOutlet NSMenuItem *quickLookItem;	
-	
-	NSMutableArray *rootItems;
-	BOOL showBundlesAsFolders;
-	BOOL showInvisibles;
-	NSPredicate *includeOnlyPredicate;
-	NSPredicate *excludePredicate;
-}
+#import "NGFolderProject.h"
 
-- (NSArray *) projectRoots;
-- (void) setProjectRoots:(NSArray *) roots;
 
-- (NSArray *) rootItems;
+@implementation NGFolderProject
 
-- (IBAction) toggleQuickLookPreview:(id)sender;
+- (BOOL)readFromURL:(NSURL *)url ofType:(NSString *)typeName error:(NSError **)outError
+{
+	NSLog(@"writeable types = %@, readable types = %@", [NSDocument writableTypes], [NSDocument readableTypes]);
+	isNativeProject = NO;
+	projectDictionary = [[NSMutableDictionary alloc] init];
+	hintURL = [url retain];
+	[self setFileType:NGConstructionProjectUTI];
+	return YES;
+}	
 
 @end

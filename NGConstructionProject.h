@@ -30,7 +30,7 @@
 #import <Cocoa/Cocoa.h>
 #import <Quartz/Quartz.h>
 
-#import "NGFileInfo.h"
+#import "NGFileTreeItem.h"
 
 #define NGConstructionProjectUTI @"com.nexgenta.uti.construction-project"
 #define NGConstructionProjectInfoPlistKey @"NGConstructionProject"
@@ -40,8 +40,8 @@
 @interface NGConstructionProject : NSDocument
 {
 	IBOutlet id	mDelegateRef;
-	
-	NSURL *projectFile;
+	BOOL isNativeProject;
+	BOOL hasSignificantChanges;
 	NSURL *hintURL;
 	NSMutableDictionary *projectDictionary;
 	NSMutableDictionary *userDictionary;
@@ -54,7 +54,7 @@
 @protocol NGConstructionProjectDelegate
 @optional
 
-- (void) folderBrowser:(NGConstructionProject*) browser didSelectItem:(NGFileInfo*) item;
-- (void) launchItem:(NGFileInfo *)item;
+- (void) folderBrowser:(NGConstructionProject*) browser didSelectItem:(NGFileTreeItem *) item;
+- (void) launchItem:(NGFileTreeItem *)item;
 
 @end

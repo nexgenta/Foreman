@@ -1,4 +1,6 @@
 /*
+ * Based upon GCFolderInfo from GCFBDemo, written by Graham Cox <graham.cox[at]bigpond.com>
+ * Copyright 2009 Apptree.net. All rights reserved.
  * Copyright (c) 2010 Mo McRoberts <mo.mcroberts@nexgenta.com>
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,25 +26,23 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS 
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 #import <Cocoa/Cocoa.h>
 #import <Quartz/Quartz.h>
+#import "NGFileTreeItem.h"
 
-@interface NGProjectController : NSWindowController {
-	IBOutlet NSOutlineView *mFolderTable;
-	IBOutlet NSMenuItem *quickLookItem;	
-	
-	NSMutableArray *rootItems;
-	BOOL showBundlesAsFolders;
-	BOOL showInvisibles;
-	NSPredicate *includeOnlyPredicate;
-	NSPredicate *excludePredicate;
+@interface NGFileItem : NGFileTreeItem
+{
+	BOOL mIsFolder;
+	BOOL mIsBundle;
+	BOOL mIsVisible;
+	NSURL *url;
+	NSString *mName;
+	NSString *displayName;
+	NSMutableArray *mChildren;
+	NSArray *fileTypes;
 }
 
-- (NSArray *) projectRoots;
-- (void) setProjectRoots:(NSArray *) roots;
-
-- (NSArray *) rootItems;
-
-- (IBAction) toggleQuickLookPreview:(id)sender;
+- (NSString *) path;
 
 @end

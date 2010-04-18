@@ -30,11 +30,13 @@
 #import "NGConstructionProject.h"
 #import "GCIconTextFieldCell.h"
 #import "NGProjectController.h"
-#import "NGFileInfo.h"
+#import "NGFileTreeItem.h"
 
 @interface NGConstructionProject (Private)
 
-- (NSArray *) rootPathsForProjectWithHint:(NSURL *)specified;
+- (NSArray *) projectRoots;
+- (NSArray *) rootItems;
+
 - (void)windowDidMoveResize:(NSNotification *)notification;
 - (void)shouldSaveSoon:(id)sender;
 
@@ -45,7 +47,6 @@
 - (NSString *) windowNibName
 {
 	return @"ProjectWindow";
-
 }
 
 - (void) makeWindowControllers
@@ -53,90 +54,75 @@
 	[self addWindowController:[[NGProjectController alloc] initWithWindowNibName:[self windowNibName]]];
 }
 
+- (void) windowControllerDidLoadNib:(NSWindowController *) windowController
+{
+	NGProjectController *controller;
+	id info;
+	NSWindow *window;
+	
+	[super windowControllerDidLoadNib:windowController];
+	if([windowController isKindOfClass:[NGProjectController class]])
+	{
+		controller = (NGProjectController *) windowController;
+		[controller setProjectRoots:[self projectRoots]];
+	}
+	window = [windowController window];
+	if((info = [userDictionary objectForKey:@"NSWindow Frame"]))
+	{
+		[window setFrameFromString:info];
+	}
+	if((info = [userDictionary objectForKey:@"NSToolbar"]))
+	{
+		[[window toolbar] setConfigurationFromDictionary:info];
+	}
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowDidMoveResize:) name:NSWindowDidMoveNotification object:window];
+	[windowController showWindow:self];
+}	
+
 - (BOOL)readFromURL:(NSURL *)url ofType:(NSString *)typeName error:(NSError **)outError
 {
 	id plist, dict, item;
-	NGFileInfo *info;
 	NSString *projectPlistPath, *userFileName;
 	
-	info = [[NGFileInfo alloc] initWithURL:url];
-	if([info conformsToType:NGConstructionProjectUTI])
+	isNativeProject = YES;
+	hintURL = [url retain];
+	projectPlistPath = [[[url path] stringByAppendingPathComponent:@"Contents"] stringByAppendingPathComponent:@"Info.plist"];
+	if((plist = [NSDictionary dictionaryWithContentsOfFile:projectPlistPath]))
 	{
-		projectPlistPath = [[[url path] stringByAppendingPathComponent:@"Contents"] stringByAppendingPathComponent:@"Info.plist"];
-		if((plist = [NSDictionary dictionaryWithContentsOfFile:projectPlistPath]))
+		if((dict = [plist objectForKey:NGConstructionProjectInfoPlistKey]) && [dict isKindOfClass:[NSDictionary class]])
 		{
-			if((dict = [plist objectForKey:NGConstructionProjectInfoPlistKey]) && [dict isKindOfClass:[NSDictionary class]])
-			{
-				if((item = [dict objectForKey:@"Version"]) && NSOrderedSame == [NGConstructionProjectVersion1 caseInsensitiveCompare:item])
-				{						
-					projectDictionary = [dict mutableCopy];
-					projectFile = [url retain];
-					userFileName = [NSString stringWithFormat:@"user-%@.plist", NSUserName()];
-					projectPlistPath = [[[url path] stringByAppendingPathComponent:@"Contents"] stringByAppendingPathComponent:userFileName];
-					url = nil;
-					if((plist = [NSDictionary dictionaryWithContentsOfFile:projectPlistPath]))
-					{
-						userDictionary = [plist retain];
-					}
-					else
-					{
-						NSLog(@"Failed to load %@", userFileName);
-					}
-
+			if((item = [dict objectForKey:@"Version"]) && NSOrderedSame == [NGConstructionProjectVersion1 caseInsensitiveCompare:item])
+			{						
+				projectDictionary = [dict mutableCopy];
+				userFileName = [NSString stringWithFormat:@"user-%@.plist", NSUserName()];
+				projectPlistPath = [[[url path] stringByAppendingPathComponent:@"Contents"] stringByAppendingPathComponent:userFileName];
+				url = nil;
+				if((plist = [NSDictionary dictionaryWithContentsOfFile:projectPlistPath]))
+				{
+					userDictionary = [plist retain];
 				}
 				else
 				{
-					NSLog(@"Version key does not exist or is not %@", NGConstructionProjectVersion1);
+					NSLog(@"Failed to load %@", userFileName);
 				}
-				
+
 			}
 			else
 			{
-				NSLog(@"Project Info.plist dictionary does not contain %@", NGConstructionProjectInfoPlistKey);
+				NSLog(@"Version key does not exist or is not %@", NGConstructionProjectVersion1);
 			}
 			
+		}
+		else
+		{
+			NSLog(@"Project Info.plist dictionary does not contain %@", NGConstructionProjectInfoPlistKey);
 		}
 	}
 	if(!projectDictionary)
 	{
 		projectDictionary = [[NSMutableDictionary alloc] init];
 	}
-	if(url)
-	{
-		hintURL = [url retain];
-	}
-	if(!projectFile)
-	{
-		[self setFileURL:nil];
-	}
-	[self setFileType:NGConstructionProjectUTI];
 	return YES;
-}
-
-- (void) saveDocument:(id) sender
-{
-	if(projectFile)
-	{
-		[super saveDocument:sender];
-	}
-	else
-	{
-		[super saveDocumentAs:sender];
-	}
-}
-
-- (void)canCloseDocumentWithDelegate:(id)delegate shouldCloseSelector:(SEL)shouldCloseSelector contextInfo:(void *)contextInfo
-{
-	if(projectFile)
-	{
-		[self saveDocument:self];
-	}
-	[super canCloseDocumentWithDelegate:delegate shouldCloseSelector:shouldCloseSelector contextInfo:contextInfo];
-}
-
-- (void)shouldSaveSoon:(id)sender
-{
-	/* Do nothing, for the time being */
 }
 
 - (BOOL) writeToURL:(NSURL *)url ofType:(NSString *)typeName error:(NSError **)outError
@@ -148,7 +134,7 @@
 	NSMutableArray *rootList;
 	NSData *data;
 	NSWindow *window;
-	id u;
+	id rootItem;
 	BOOL changed;
 	
 	contents = [[url path] stringByAppendingPathComponent:@"Contents"];
@@ -158,26 +144,15 @@
 	}
 	dict = [NSMutableDictionary dictionaryWithCapacity:10];
 	[projectDictionary setObject:NGConstructionProjectVersion1 forKey:@"Version"];
-	roots = [projectDictionary objectForKey:@"Roots"];
+	roots = [self rootItems];
 	rootList = [NSMutableArray arrayWithCapacity:[roots count]];
 	changed = NO;
 	e = [roots objectEnumerator];
-	while((u = [e nextObject]))
+	while((rootItem = [e nextObject]))
 	{
-		if([u isKindOfClass:[NSURL class]])
-		{
-			[rootList addObject:[u path]];
-			changed = YES;
-		}
-		else
-		{
-			[rootList addObject:u];
-		}
+		[rootList addObject:[rootItem representationForPropertyList]];
 	}
-	if(changed)
-	{
-		[projectDictionary setObject:rootList forKey:@"Roots"];
-	}
+	[projectDictionary setObject:rootList forKey:@"Roots"];
 	[dict setObject:projectDictionary forKey:NGConstructionProjectInfoPlistKey];
 	if(nil == (data = [NSPropertyListSerialization dataWithPropertyList:dict format:NSPropertyListXMLFormat_v1_0 options:0 error:outError]))
 	{
@@ -203,35 +178,36 @@
 	{
 		return NO;
 	}
-	[projectFile release];
-	projectFile = [url retain];
+	hasSignificantChanges = NO;
+	isNativeProject = YES;
 	return YES;
 }
 
-- (void) windowControllerDidLoadNib:(NSWindowController *) windowController
+- (void) saveDocument:(id) sender
 {
-	NGProjectController *controller;
-	id info;
-	NSWindow *window;
+	if(isNativeProject)
+	{
+		[super saveDocument:sender];
+	}
+	else
+	{
+		[super saveDocumentAs:sender];
+	}
+}
 
-	[super windowControllerDidLoadNib:windowController];
-	if([windowController isKindOfClass:[NGProjectController class]])
+- (void)canCloseDocumentWithDelegate:(id)delegate shouldCloseSelector:(SEL)shouldCloseSelector contextInfo:(void *)contextInfo
+{
+	if(isNativeProject)
 	{
-		controller = (NGProjectController *) windowController;
-		[controller setProjectRoots:[self rootPathsForProjectWithHint:hintURL]];
+		[self saveDocument:self];
 	}
-	window = [windowController window];
-	if((info = [userDictionary objectForKey:@"NSWindow Frame"]))
-	{
-		[window setFrameFromString:info];
-	}
-	if((info = [userDictionary objectForKey:@"NSToolbar"]))
-	{
-		[[window toolbar] setConfigurationFromDictionary:info];
-	}
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowDidMoveResize:) name:NSWindowDidMoveNotification object:window];
-	[windowController showWindow:self];
-}	
+	[super canCloseDocumentWithDelegate:delegate shouldCloseSelector:shouldCloseSelector contextInfo:contextInfo];
+}
+
+- (void)shouldSaveSoon:(id)sender
+{
+	/* Do nothing, for the time being */	
+}
 
 - (void) windowDidMoveResize:(NSNotification *)notification
 {
@@ -242,50 +218,43 @@
 {
 	[projectDictionary release];
 	[userDictionary release];
-	[projectFile release];
 	[hintURL release];
 	[super dealloc];
 }
 
 - (BOOL) isDocumentEdited
 {
-	if(projectFile)
+	if(hasSignificantChanges)
 	{
-		return NO;
+		return YES;
 	}
-	return YES;
+	return NO;
 }
 
-- (NSArray *) rootPathsForProjectWithHint:(NSURL *)specified
+- (NSArray *) projectRoots
 {
 	NSArray *rootList;
-	NSMutableArray *roots;
-	NSEnumerator *e;
-	NSString *s;
-	NSURL *u;
 	
-	if(specified)
+	if((rootList = [projectDictionary objectForKey:@"Roots"]))
 	{
-		
-		roots = [NSMutableArray arrayWithObject:[specified absoluteURL]];
-		[projectDictionary setObject:roots forKey:@"Roots"];
+		return rootList;
 	}
-	else
+	if(hintURL)
 	{
-		rootList = [projectDictionary objectForKey:@"Roots"];
-		roots = [NSMutableArray arrayWithCapacity:[rootList count]];
-		e = [rootList objectEnumerator];
-		while((s = [e nextObject]))
-		{
-			if(projectFile)
-			{
-				/* TODO: relative paths in the project file */
-				u = [NSURL fileURLWithPath:[[s stringByExpandingTildeInPath] stringByStandardizingPath]];
-				[roots addObject:u];
-			}
-		}
+		return [NSArray arrayWithObject:[hintURL absoluteURL]];
 	}
-	return roots;
+	return [NSArray array];
+}
+
+- (NSArray *) rootItems
+{
+	NGProjectController *wc;
+	
+	if((wc = [[self windowControllers] objectAtIndex:0]))
+	{
+		return [wc rootItems];
+	}
+	return nil;
 }
 
 @end

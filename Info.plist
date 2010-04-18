@@ -14,10 +14,14 @@
 			<key>LSHandlerRank</key>
 			<string>Alternate</string>
 			<key>NSDocumentClass</key>
-			<string>NGConstructionProject</string>
+			<string>NGFolderProject</string>
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>com.apple.mount-point</string>
+			</array>
+			<key>NSExportableTypes</key>
+			<array>
+				<string>com.nexgenta.uti.construction-project</string>
 			</array>
 		</dict>
 		<dict>
@@ -32,7 +36,11 @@
 				<string>public.directory</string>
 			</array>
 			<key>NSDocumentClass</key>
-			<string>NGConstructionProject</string>
+			<string>NGFolderProject</string>
+			<key>NSExportableTypes</key>
+			<array>
+				<string>com.nexgenta.uti.construction-project</string>
+			</array>
 		</dict>
 		<dict>
 			<key>CFBundleTypeName</key>
@@ -50,7 +58,11 @@
 				<string>public.volume</string>
 			</array>
 			<key>NSDocumentClass</key>
-			<string>NGConstructionProject</string>
+			<string>NGFolderProject</string>
+			<key>NSExportableTypes</key>
+			<array>
+				<string>com.nexgenta.uti.construction-project</string>
+			</array>
 		</dict>
 		<dict>
 			<key>CFBundleTypeName</key>
@@ -68,7 +80,11 @@
 				<string>public.folder</string>
 			</array>
 			<key>NSDocumentClass</key>
-			<string>NGConstructionProject</string>
+			<string>NGFolderProject</string>
+			<key>NSExportableTypes</key>
+			<array>
+				<string>com.nexgenta.uti.construction-project</string>
+			</array>
 		</dict>
 		<dict>
 			<key>CFBundleTypeExtensions</key>
@@ -76,7 +92,7 @@
 				<string>constructionProject</string>
 			</array>
 			<key>CFBundleTypeName</key>
-			<string>Construction Project</string>
+			<string>NGConstructionProject</string>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>LSHandlerRank</key>
@@ -88,9 +104,36 @@
 			<key>LSTypeIsPackage</key>
 			<true/>
 			<key>CFBundleTypeIconFile</key>
-			<string>ConstructionProject.icns</string>
+			<string>ConstructionProject</string>
 			<key>NSDocumentClass</key>
 			<string>NGConstructionProject</string>
+		</dict>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>Xcode Project</string>
+			<key>LSHandlerRank</key>
+			<string>Alternate</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>xcode</string>
+				<string>xcodeproj</string>
+			</array>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.apple.xcode.project</string>
+			</array>
+			<key>NSDocumentClass</key>
+			<string>NGXcodeProject</string>
+			<key>CFBundleTypeIconFile</key>
+			<string>XcodeProject</string>
+			<key>LSTypeIsPackage</key>
+			<true/>
+			<key>NSExportableTypes</key>
+			<array>
+				<string>com.nexgenta.uti.construction-project</string>
+			</array>
 		</dict>
 	</array>
 	<key>CFBundleExecutable</key>
@@ -108,18 +151,34 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1.0</string>
+	<string>0.1</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>10.6</string>
+	<key>NGBuiltinIconDocumentTypeIcons</key>
+	<dict>
+		<key>private.group</key>
+		<string>Manilla Folder.icns</string>
+		<key>wrapper.framework</key>
+		<string>Framework.tiff</string>
+		<key>com.apple.xcode.project</key>
+		<string>XcodeProject.icns</string>
+	</dict>
+	<key>LSArchitecturePriority</key>
+	<array>
+		<string>x86_64</string>
+		<string>i386</string>
+	</array>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict>
 			<key>UTTypeConformsTo</key>
 			<array>
 				<string>com.apple.package</string>
-				<string>public.composite-content</string>
+				<string>public.data</string>
 			</array>
 			<key>UTTypeIdentifier</key>
 			<string>com.nexgenta.uti.construction-project</string>
@@ -134,6 +193,27 @@
 			<string>http://github.com/nexgenta/Foreman</string>
 			<key>UTTypeDescription</key>
 			<string>Construction Project</string>
+			<key>UTTypeIconFile</key>
+			<string>ConstructionProject</string>
+		</dict>
+	</array>
+	<key>UTImportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>com.apple.package</string>
+			</array>
+			<key>UTTypeIdentifier</key>
+			<string>com.apple.xcode.project</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>xcodeproj</string>
+					<string>xcode</string>
+				</array>
+			</dict>
 		</dict>
 	</array>
 </dict>

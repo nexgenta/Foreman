@@ -1,5 +1,4 @@
-/*
- * Copyright (c) 2010 Mo McRoberts <mo.mcroberts@nexgenta.com>
+/* Copyright (c) 2010 Mo McRoberts <mo.mcroberts@nexgenta.com>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -24,25 +23,15 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS 
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#import <Cocoa/Cocoa.h>
-#import <Quartz/Quartz.h>
 
-@interface NGProjectController : NSWindowController {
-	IBOutlet NSOutlineView *mFolderTable;
-	IBOutlet NSMenuItem *quickLookItem;	
-	
-	NSMutableArray *rootItems;
-	BOOL showBundlesAsFolders;
-	BOOL showInvisibles;
-	NSPredicate *includeOnlyPredicate;
-	NSPredicate *excludePredicate;
+#import "NGFileTreeItem.h"
+
+#define NGGroupFolderItemIconImage     @"Manilla Folder.icns"
+#define NGGroupFolderItemIconAltImage  @"Manilla Folder.icns"
+
+@interface NGGroupFolderItem : NGFileTreeItem {
+	NSDictionary *dict;
+	NSMutableArray *childList;
 }
-
-- (NSArray *) projectRoots;
-- (void) setProjectRoots:(NSArray *) roots;
-
-- (NSArray *) rootItems;
-
-- (IBAction) toggleQuickLookPreview:(id)sender;
 
 @end

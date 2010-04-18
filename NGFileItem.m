@@ -27,79 +27,73 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "NGFileInfo.h"
+#import "NGFileItem.h"
 
-@implementation NGFileInfo (QLPreviewItem)
+@implementation NGFileItem
 
-- (NSURL *)previewItemURL
+- (id) initWithData:(id)data matching:(NSPredicate *)predicate notMatching:(NSPredicate *)antiPredicate includeFiles:(BOOL)files includeInvisibles:(BOOL)invisibles bundlesAsFolders:(BOOL)expandBundles;
 {
-    return [self url];
-}
-
-- (NSString *)previewItemTitle
-{
-    return [self name];
-}
-
-@end
-
-
-@implementation NGFileInfo
-
-- (id) initWithURL:(NSURL *)aURL matching:(NSPredicate *)predicate notMatching:(NSPredicate *)antiPredicate includeFiles:(BOOL)files includeInvisibles:(BOOL)invisibles bundlesAsFolders:(BOOL)expandBundles;
-{
+	NSURL *aURL;
 	NSString *path;
 	OSStatus err;
 	LSItemInfoRecord info;
 
-	if((self = [super init]))
+	if([data isKindOfClass:[NSString class]])
+	{
+		aURL = [NSURL fileURLWithPath:[data stringByExpandingTildeInPath]];
+	}
+	else if([data isKindOfClass:[NSDictionary class]])
+	{
+		aURL = nil;
+		if((path = [data objectForKey:@"path"]))
+		{
+			aURL = [NSURL fileURLWithPath:[path stringByExpandingTildeInPath]];
+		}
+	}
+	else if([data isKindOfClass:[NSURL class]])
+	{
+		aURL = data;
+	}
+	if(!aURL)
+	{
+		NSLog(@"NGFileItem -initWithData: data object %@ could not be coalesced into a URL", data);
+		[self dealloc];
+		return nil;
+	}
+	if((self = [super initWithData:data matching:predicate notMatching:antiPredicate includeFiles:files includeInvisibles:invisibles bundlesAsFolders:expandBundles]))
 	{
 		url = [aURL retain];
 		path = [aURL path];
 		mName = [[path lastPathComponent] retain];
 		displayName = [[[NSFileManager defaultManager] displayNameAtPath:path] retain];
-		if(![[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&mIsFolder])
+		if([[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&mIsFolder])
 		{
-			[self release];
-			return nil;
-		}
-		if(mIsFolder)
-		{
-			if([[NSWorkspace sharedWorkspace] isFilePackageAtPath:path])
+			if(mIsFolder)
 			{
-				mIsBundle = YES;
+				if([[NSWorkspace sharedWorkspace] isFilePackageAtPath:path])
+				{
+					mIsBundle = YES;
+				}
 			}
-		}
-		mIsVisible = YES;
-		if(!(err = LSCopyItemInfoForURL((CFURLRef) aURL, kLSRequestBasicFlagsOnly, &info)))
-		{
-			if(info.flags & kLSItemInfoIsInvisible)
+			mIsVisible = YES;
+			if(!(err = LSCopyItemInfoForURL((CFURLRef) aURL, kLSRequestBasicFlagsOnly, &info)))
 			{
-				mIsVisible = NO;
-			}
+				if(info.flags & kLSItemInfoIsInvisible)
+				{
+					mIsVisible = NO;
+				}
+			}			
 		}
-		if(predicate)
+		else
 		{
-			mPredicate = [predicate retain];
+			NSLog(@"NGFileItem -initWithData: warning: no file exists at path %@", path);
 		}
-		if(antiPredicate)
-		{
-			mAntiPredicate = [antiPredicate retain];
-		}
-		mIncludeFiles = files;
-		mIncludeInvisibles = invisibles;
-		mBundlesAsFolders = expandBundles;
 		if([mName characterAtIndex:0] == '.')
 		{
 			mIsVisible = NO;
-		}
+		}		
 	}
 	return self;
-}
-
-- (id) initWithURL:(NSURL*) aURL
-{
-	return (self = [self initWithURL:aURL matching:nil notMatching:nil includeFiles:YES includeInvisibles:NO bundlesAsFolders:NO]);
 }
 
 - (void) dealloc
@@ -133,6 +127,11 @@
 	return YES;
 }
 
+- (BOOL) isFile
+{
+	return ((mBundlesAsFolders && mIsFolder) || !mIsFolder);
+}
+
 - (BOOL) isFolder
 {
 	return mIsFolder && (mBundlesAsFolders || !mIsBundle);
@@ -148,7 +147,7 @@
 	return mIsVisible;
 }
 
-- (NSString*) name
+- (NSString*) defaultName
 {
 	return displayName;
 }
@@ -224,7 +223,7 @@
 	NSEnumerator *iter;
 	NSString *sp;
 	NSURL *fp;
-	NGFileInfo *fi;
+	NGFileItem *fi;
 	
 	/* Lazily load the children of this entry */
 	
@@ -238,7 +237,7 @@
 		while((sp = [iter nextObject]))
 		{
 			fp = [[self url] URLByAppendingPathComponent:sp];
-			if(!(fi = [[NGFileInfo alloc] initWithURL:fp matching:mPredicate notMatching:mAntiPredicate includeFiles:mIncludeFiles includeInvisibles:mIncludeInvisibles bundlesAsFolders:mBundlesAsFolders]))
+			if(!(fi = [[NGFileItem alloc] initWithData:fp matching:mPredicate notMatching:mAntiPredicate includeFiles:mIncludeFiles includeInvisibles:mIncludeInvisibles bundlesAsFolders:mBundlesAsFolders]))
 			{
 				continue;
 			}
@@ -266,11 +265,14 @@
 }
 
 /* Return the icon for the file represented by this instance as an NSImage */
-- (NSImage*) icon
+- (NSImage*) defaultIcon
 {
 	return [[NSWorkspace sharedWorkspace] iconForFile:[url path]];
 }
 
-
+- (id) representationForPropertyList
+{
+	return [url path];
+}
 
 @end

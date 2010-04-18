@@ -1,21 +1,40 @@
-//
-//  NGProjectController.m
-//  Foreman
-//
-//  Created by Mo McRoberts on 2010-04-16.
-//  Copyright 2010 Nexgenta. All rights reserved.
-//
+/*
+ * Copyright (c) 2010 Mo McRoberts <mo.mcroberts@nexgenta.com>
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. The names of the author(s) of this software may not be used to endorse
+ *    or promote products derived from this software without specific prior
+ *    written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, 
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY 
+ * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
+ * AUTHORS OF THIS SOFTWARE BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
+ * TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF 
+ * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING 
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS 
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 
 #import <Quartz/Quartz.h>
 
 #import "NGProjectController.h"
-#import "NGFileInfo.h"
+#import "NGFileTreeItem.h"
 #import "GCIconTextFieldCell.h"
 
 @interface NGProjectController (InternalMethods)
 
 - (BOOL) validateUserInterfaceItem:(id <NSValidatedUserInterfaceItem>)item;
-- (NSArray*) sortedChildrenOfItem:(NGFileInfo*) fi usingSortDescriptors:(NSArray*) sortDescriptors;
+- (NSArray*) sortedChildrenOfItem:(NGFileTreeItem *) fi usingSortDescriptors:(NSArray*) sortDescriptors;
 - (void) expandRoots;
 - (NSResponder *)nextResponder;
 
@@ -101,7 +120,7 @@
 	{
 		[[self window] setTitleWithRepresentedFilename:[[[self document] fileURL] path]];
 	}
-	else if([rootItems count])
+	else if([rootItems count] && [[[rootItems objectAtIndex:0] url] path])
 	{
 		[[self window] setTitleWithRepresentedFilename:[[[rootItems objectAtIndex:0] url] path]];
 	}
@@ -122,14 +141,22 @@
 - (void) setProjectRoots:(NSArray *)roots
 {
 	NSEnumerator *e;
-	NSURL *u;
+	id u, fi;
 	
 	[rootItems release];
 	rootItems = [[NSMutableArray alloc] initWithCapacity:[roots count]];
 	e = [roots objectEnumerator];
 	while((u = [e nextObject]))
 	{
-		[rootItems addObject:[[NGFileInfo alloc] initWithURL:u]];
+		if((fi = [NGFileTreeItem fileTreeItemWithData:u]))
+		{
+			[rootItems addObject:fi];
+		}
+		else
+		{
+			NSLog(@"+ filetreeItemWithData:");
+		}
+
 	}
 	if([self isWindowLoaded])
 	{
@@ -144,7 +171,7 @@
 {
 	NSMutableArray *array;
 	NSEnumerator *e;
-	NGFileInfo *i;
+	NGFileTreeItem *i;
 	
 	array = [NSMutableArray arrayWithCapacity:[rootItems count]];
 	e = [rootItems objectEnumerator];
@@ -155,10 +182,15 @@
 	return array;
 }
 
+- (NSArray *) rootItems
+{
+	return rootItems;
+}
+
 - (void) expandRoots
 {
 	NSEnumerator *e;
-	NGFileInfo *i;
+	NGFileTreeItem *i;
 	
 	e = [rootItems objectEnumerator];
 	while((i = [e nextObject]))
@@ -168,7 +200,7 @@
 }
 
 /* Return the children of a given node sorted by a set of descriptors (keys) */
-- (NSArray*) sortedChildrenOfItem:(NGFileInfo*)fi usingSortDescriptors:(NSArray*)sortDescriptors
+- (NSArray*) sortedChildrenOfItem:(NGFileTreeItem *)fi usingSortDescriptors:(NSArray*)sortDescriptors
 {
 	NSMutableArray *children;
 	
@@ -235,7 +267,7 @@
 		// maintain the selection
 	
 	int rowIndex = [outlineView selectedRow];
-	NGFileInfo* fi = nil;
+	NGFileTreeItem* fi = nil;
 	
 	if( rowIndex != -1 )
 		fi = [outlineView itemAtRow:rowIndex];
@@ -253,7 +285,7 @@
 
 - (void) outlineViewSelectionDidChange:(NSNotification*) notification
 {
-	NGFileInfo *item;
+	NGFileTreeItem *item;
 	int rowIndex;
 	
 	(void) notification;

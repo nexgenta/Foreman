@@ -1,5 +1,4 @@
-/*
- * Copyright (c) 2010 Mo McRoberts <mo.mcroberts@nexgenta.com>
+/* Copyright (c) 2010 Mo McRoberts <mo.mcroberts@nexgenta.com>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -24,25 +23,44 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS 
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 #import <Cocoa/Cocoa.h>
 #import <Quartz/Quartz.h>
 
-@interface NGProjectController : NSWindowController {
-	IBOutlet NSOutlineView *mFolderTable;
-	IBOutlet NSMenuItem *quickLookItem;	
-	
-	NSMutableArray *rootItems;
-	BOOL showBundlesAsFolders;
-	BOOL showInvisibles;
-	NSPredicate *includeOnlyPredicate;
-	NSPredicate *excludePredicate;
+@interface NGFileTreeItem : NSObject {
+	NSDictionary *itemDictionary;
+	BOOL mIncludeInvisibles;
+	BOOL mIncludeFiles;
+	BOOL mBundlesAsFolders;
+	NSPredicate *mPredicate;
+	NSPredicate *mAntiPredicate;	
 }
 
-- (NSArray *) projectRoots;
-- (void) setProjectRoots:(NSArray *) roots;
++ (id) fileTreeItemWithData:(id)data matching:(NSPredicate *)matchPredicate notMatching:(NSPredicate *)antiPredicate includeFiles:(BOOL)files includeInvisibles:(BOOL)invisibles bundlesAsFolders:(BOOL)expandBundles;
++ (id) fileTreeItemWithData:(id)data;
 
-- (NSArray *) rootItems;
++ (NSString *) builtInImageNameForType:(NSString *)name;
 
-- (IBAction) toggleQuickLookPreview:(id)sender;
+- (id) initWithData:(id)data matching:(NSPredicate *)predicate notMatching:(NSPredicate *)antiPredicate includeFiles:(BOOL)files includeInvisibles:(BOOL)invisibles bundlesAsFolders:(BOOL)expandBundles;
+
+- (BOOL) isFile;
+- (BOOL) isFolder;
+- (BOOL) isBundle;
+- (BOOL) isVisible;
+- (BOOL) matchesPredicate;
+- (BOOL) conformsToType:(NSString *)type;
+- (NSURL *) url;
+- (NSString *) name;
+- (NSString *) defaultName;
+- (NSImage *) icon;
+- (NSImage *) defaultIcon;
+- (NSArray *) fileTypes;
+- (NSArray *) children;
+- (unsigned) valence;
+- (id) representationForPropertyList;
+
+@end
+
+@interface NGFileTreeItem (QLPreviewItem) <QLPreviewItem>
 
 @end

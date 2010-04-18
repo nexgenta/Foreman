@@ -93,7 +93,7 @@
 										<reference key="NSControlView" ref="510718740"/>
 										<int key="NSButtonFlags">140787967</int>
 										<int key="NSButtonFlags2">6</int>
-										<object class="NSCustomResource" key="NSNormalImage" id="857435536">
+										<object class="NSCustomResource" key="NSNormalImage" id="354636439">
 											<string key="NSClassName">NSImage</string>
 											<string key="NSResourceName">NSGoLeftTemplate</string>
 										</object>
@@ -103,7 +103,7 @@
 										<int key="NSPeriodicInterval">75</int>
 									</object>
 								</object>
-								<reference key="NSToolbarItemImage" ref="857435536"/>
+								<reference key="NSToolbarItemImage" ref="354636439"/>
 								<nil key="NSToolbarItemTarget"/>
 								<nil key="NSToolbarItemAction"/>
 								<string key="NSToolbarItemMinSize">{24, 19}</string>
@@ -407,7 +407,7 @@
 													<bytes key="NSWhite">MC41AA</bytes>
 												</object>
 											</object>
-											<double key="NSRowHeight">15</double>
+											<double key="NSRowHeight">16</double>
 											<int key="NSTvFlags">-1841299456</int>
 											<reference key="NSDelegate"/>
 											<reference key="NSDataSource"/>
@@ -428,7 +428,7 @@
 								<object class="NSScroller" id="225847043">
 									<reference key="NSNextResponder" ref="567443367"/>
 									<int key="NSvFlags">256</int>
-									<string key="NSFrame">{{225, 0}, {15, 391}}</string>
+									<string key="NSFrame">{{225, 0}, {15, 405}}</string>
 									<reference key="NSSuperview" ref="567443367"/>
 									<reference key="NSTarget" ref="567443367"/>
 									<string key="NSAction">_doScroller:</string>
@@ -452,7 +452,7 @@
 							<reference key="NSVScroller" ref="225847043"/>
 							<reference key="NSHScroller" ref="489082945"/>
 							<reference key="NSContentView" ref="667926865"/>
-							<bytes key="NSScrollAmts">QSAAAEEgAABBkAAAQZAAAA</bytes>
+							<bytes key="NSScrollAmts">QSAAAEEgAABBmAAAQZgAAA</bytes>
 						</object>
 					</object>
 					<string key="NSFrameSize">{240, 406}</string>
@@ -886,7 +886,7 @@
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier" id="267793232">
+					<object class="IBClassDescriptionSource" key="sourceIdentifier" id="175724186">
 						<string key="majorKey">IBFrameworkSource</string>
 						<string key="minorKey">PDFKit.framework/Headers/PDFView.h</string>
 					</object>
@@ -951,7 +951,7 @@
 							<string>id</string>
 						</object>
 					</object>
-					<reference key="sourceIdentifier" ref="267793232"/>
+					<reference key="sourceIdentifier" ref="175724186"/>
 				</object>
 			</object>
 		</object>

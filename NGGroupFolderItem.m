@@ -1,7 +1,4 @@
-/*
- * Based upon GCFolderInfo from GCFBDemo, written by Graham Cox <graham.cox[at]bigpond.com>
- * Copyright 2009 Apptree.net. All rights reserved.
- * Copyright (c) 2010 Mo McRoberts <mo.mcroberts@nexgenta.com>
+/* Copyright (c) 2010 Mo McRoberts <mo.mcroberts@nexgenta.com>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -27,44 +24,64 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import <Cocoa/Cocoa.h>
-#import <Quartz/Quartz.h>
+#import "NGGroupFolderItem.h"
 
-@interface NGFileInfo : NSObject
+@implementation NGGroupFolderItem
+
+- (void) dealloc
 {
-	NSURL *url;
-	NSString *mName;
-	NSString *displayName;
-	NSMutableArray *mChildren;
-	BOOL mIsFolder;
-	BOOL mIsBundle;
-	BOOL mIsVisible;
-	BOOL mIncludeInvisibles;
-	BOOL mIncludeFiles;
-	BOOL mBundlesAsFolders;
-	NSPredicate *mPredicate;
-	NSPredicate *mAntiPredicate;
-	NSArray *fileTypes;
+	[childList release];
+	[super dealloc];
 }
 
-- (id) initWithURL:(NSURL *)url;
-- (id) initWithURL:(NSURL *)url matching:(NSPredicate *)predicate notMatching:(NSPredicate *)antiPredicate includeFiles:(BOOL)files includeInvisibles:(BOOL)invisibles bundlesAsFolders:(BOOL)expandBundles;
+- (BOOL) isFolder
+{
+	return YES;
+}
 
-- (BOOL) isFolder;
-- (BOOL) isBundle;
-- (BOOL) isVisible;
-- (BOOL) matchesPredicate;
-- (BOOL) conformsToType:(NSString *)type;
-- (NSURL *) url;
-- (NSString *) name;
-- (NSString *) path;
-- (NSImage *) icon;
-- (NSArray *) fileTypes;
-- (NSArray *) children;
-- (unsigned) valence;
+- (BOOL) isFile
+{
+	return NO;
+}
 
-@end
+- (BOOL) isVisible
+{
+	return YES;
+}
 
-@interface NGFileInfo (QLPreviewItem) <QLPreviewItem>
+- (NSImage *) defaultIcon
+{
+	NSString *name;
+	
+	if((name = [NGFileTreeItem builtInImageNameForType:@"private.group"]))
+	{
+		return [NSImage imageNamed:name];
+	}
+	return nil;
+}
+
+- (NSArray *) children
+{
+	id children, data;
+	NSEnumerator *e;
+	NGFileTreeItem *fi;
+	
+	if(!childList)
+	{
+		if((children = [itemDictionary objectForKey:@"children"]) && [children isKindOfClass:[NSArray class]])
+		{
+			childList = [[NSMutableArray alloc] initWithCapacity:[children count]];
+			e = [children objectEnumerator];
+			while((data = [e nextObject]))
+			{
+				if((fi = [NGFileTreeItem fileTreeItemWithData:data matching:mPredicate notMatching:mAntiPredicate includeFiles:mIncludeFiles includeInvisibles:mIncludeInvisibles bundlesAsFolders:mBundlesAsFolders]))
+				{
+					[childList addObject:fi];
+				}
+			}
+		}
+	}
+	return childList;
+}
 
 @end

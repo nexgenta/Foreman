@@ -68,13 +68,13 @@
 	return NO;
 }
 
-- (void) launchItem:(NGFileInfo *)item
+- (void) launchItem:(NGFileTreeItem *)item
 {
 	id type, uti, bundle;
 	NSArray *supportedTypes, *urls;
 	NSEnumerator *iter;
 	
-	if([item isFolder])
+	if(![item isFile])
 	{
 		return;
 	}
@@ -95,7 +95,7 @@
 			{
 				if((bundle = [type objectForKey:@"OpenWithBundle"]) && [bundle isKindOfClass:[NSString class]])
 				{
-					urls = [NSArray arrayWithObject:[NSURL fileURLWithPath:[item path]]];
+					urls = [NSArray arrayWithObject:[item url]];
 					[[NSWorkspace sharedWorkspace] openURLs:urls withAppBundleIdentifier:bundle options:NSWorkspaceLaunchDefault additionalEventParamDescriptor:nil launchIdentifiers:NULL];
 					return;
 				}
@@ -104,7 +104,7 @@
 
 		}
 	}
-	[[NSWorkspace sharedWorkspace] openFile:[item path]];
+	[[NSWorkspace sharedWorkspace] openURL:[item url]];
 }
 
 /* File > New Project from Folder… */
