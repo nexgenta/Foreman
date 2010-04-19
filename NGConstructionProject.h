@@ -43,9 +43,12 @@
 	BOOL isNativeProject;
 	BOOL hasSignificantChanges;
 	NSURL *hintURL;
+	NSURL *saveDestinationURL;
 	NSMutableDictionary *projectDictionary;
 	NSMutableDictionary *userDictionary;
 }
+
+- (NSURL *) saveDestinationURL;
 
 @end
 
