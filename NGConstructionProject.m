@@ -129,7 +129,7 @@
 {
 	BOOL r;
 	
-	NSLog(@"-writeSafelyToURL:%@", absoluteURL);
+/*	NSLog(@"-writeSafelyToURL:%@", absoluteURL); */
 	[saveDestinationURL release];
 	saveDestinationURL = [absoluteURL copy];
 	r = [super writeSafelyToURL:absoluteURL ofType:typeName forSaveOperation:saveOperation error:outError];
