@@ -77,7 +77,7 @@
 	}
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowDidMoveResize:) name:NSWindowDidMoveNotification object:window];
 	[windowController showWindow:self];
-}	
+}
 
 - (BOOL)readFromURL:(NSURL *)url ofType:(NSString *)typeName error:(NSError **)outError
 {
@@ -123,6 +123,17 @@
 		projectDictionary = [[NSMutableDictionary alloc] init];
 	}
 	return YES;
+}
+
+- (BOOL) writeSafelyToURL:(NSURL *)absoluteURL ofType:(NSString *)typeName forSaveOperation:(NSSaveOperationType)saveOperation error:(NSError **)outError
+{
+	BOOL r;
+	
+	NSLog(@"-writeSafelyToURL:%@", absoluteURL);
+	[saveDestinationURL release];
+	saveDestinationURL = [absoluteURL copy];
+	r = [super writeSafelyToURL:absoluteURL ofType:typeName forSaveOperation:saveOperation error:outError];
+	return r;
 }
 
 - (BOOL) writeToURL:(NSURL *)url ofType:(NSString *)typeName error:(NSError **)outError
@@ -219,6 +230,7 @@
 	[projectDictionary release];
 	[userDictionary release];
 	[hintURL release];
+	[saveDestinationURL release];
 	[super dealloc];
 }
 
@@ -255,6 +267,11 @@
 		return [wc rootItems];
 	}
 	return nil;
+}
+
+- (NSURL *) saveDestinationURL
+{
+	return saveDestinationURL;
 }
 
 @end
