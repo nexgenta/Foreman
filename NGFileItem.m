@@ -310,7 +310,7 @@
 	{
 		parent = [[parentURL filePathURL] pathComponents];
 		me = [[url filePathURL] pathComponents];
-		NSLog(@"parent = %@, me = %@", parent, me);
+/*		NSLog(@"parent = %@, me = %@", parent, me); */
 		if(parent && me)
 		{
 			pIter = [parent objectEnumerator];
@@ -330,7 +330,7 @@
 				{
 					[rel addObject:[me objectAtIndex:c]];
 				}
-				NSLog(@"rel = %@", rel);
+/*				NSLog(@"rel = %@", rel); */
 				return [rel componentsJoinedByString:@"/"];
 			}
 		}
