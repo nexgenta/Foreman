@@ -38,62 +38,47 @@
 	OSStatus err;
 	LSItemInfoRecord info;
 
-	parentURL = nil;
-	if(parent)
-	{
-		if([parent isKindOfClass:[NGFileTreeItem class]])
-		{
-			parentURL = [parent url];
-		}
-		else if([parent isKindOfClass:[NSDocument class]])
-		{
-			parentURL = [[parent fileURL] URLByDeletingLastPathComponent];
-		}
-	}
-	if([data isKindOfClass:[NSString class]])
-	{
-		data = [data stringByExpandingTildeInPath];
-		if(parentURL && (![data length] || [data characterAtIndex:0] != '/'))
-		{
-			aURL = [NSURL URLWithString:[[data stringByExpandingTildeInPath] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] relativeToURL:parentURL];
-		}
-		else
-		{
-			aURL = [NSURL fileURLWithPath:[data stringByExpandingTildeInPath]];			
-		}
-	}
-	else if([data isKindOfClass:[NSDictionary class]])
-	{
-		aURL = nil;
-		if((path = [data objectForKey:@"path"]))
-		{
-			aURL = [NSURL fileURLWithPath:[path stringByExpandingTildeInPath]];
-		}
-	}
-	else if([data isKindOfClass:[NSURL class]])
-	{
-		aURL = data;
-	}
-	if(!aURL)
-	{
-		NSLog(@"NGFileItem -initWithData: data object %@ could not be coalesced into a URL", data);
-		[self dealloc];
-		return nil;
-	}
-	if([parent isKindOfClass:[NSDocument class]])
-	{
-		if((fileReferenceURL = [[aURL absoluteURL] fileReferenceURL]))
-		{
-			aURL = fileReferenceURL;
-		}
-	}
 	if((self = [super initWithData:data parent:parent matching:predicate notMatching:antiPredicate includeFiles:files includeInvisibles:invisibles bundlesAsFolders:expandBundles]))
 	{
-		url = [aURL retain];
-		if(!(mParentURL = [[parentURL fileReferenceURL] retain]))
+		parentURL = [self parentURL];
+		if([data isKindOfClass:[NSString class]])
 		{
-			mParentURL = [parentURL retain];
+			data = [data stringByExpandingTildeInPath];
+			if(parentURL && (![data length] || [data characterAtIndex:0] != '/'))
+			{
+				aURL = [NSURL URLWithString:[[data stringByExpandingTildeInPath] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] relativeToURL:parentURL];
+			}
+			else
+			{
+				aURL = [NSURL fileURLWithPath:[data stringByExpandingTildeInPath]];			
+			}
+		}
+		else if([data isKindOfClass:[NSDictionary class]])
+		{
+			aURL = nil;
+			if((path = [data objectForKey:@"path"]))
+			{
+				aURL = [NSURL fileURLWithPath:[path stringByExpandingTildeInPath]];
+			}
+		}
+		else if([data isKindOfClass:[NSURL class]])
+		{
+			aURL = data;
+		}
+		if(!aURL)
+		{
+			NSLog(@"NGFileItem -initWithData: data object %@ could not be coalesced into a URL", data);
+			[self dealloc];
+			return nil;
+		}
+		if([parent isKindOfClass:[NSDocument class]])
+		{
+			if((fileReferenceURL = [[aURL absoluteURL] fileReferenceURL]))
+			{
+				aURL = fileReferenceURL;
+			}
 		}		
+		url = [aURL retain];
 		path = [aURL path];
 		mName = [[path lastPathComponent] retain];
 		displayName = [[[NSFileManager defaultManager] displayNameAtPath:path] retain];
@@ -132,7 +117,6 @@
 	[mName release];
 	[displayName release];
 	[url release];
-	[mParentURL release];
 	[mChildren release];
 	[mPredicate release];
 	[mAntiPredicate release];
@@ -318,12 +302,15 @@
 	NSMutableArray *rel;
 	NSEnumerator *pIter, *mIter;
 	NSString *p, *m;
+	NSURL *parentURL;
 	int matches, c;
 	
-	if(mParentURL)
+	parentURL = [self parentURL];
+	if(parentURL)
 	{
-		parent = [[mParentURL filePathURL] pathComponents];
+		parent = [[parentURL filePathURL] pathComponents];
 		me = [[url filePathURL] pathComponents];
+		NSLog(@"parent = %@, me = %@", parent, me);
 		if(parent && me)
 		{
 			pIter = [parent objectEnumerator];
@@ -343,11 +330,12 @@
 				{
 					[rel addObject:[me objectAtIndex:c]];
 				}
+				NSLog(@"rel = %@", rel);
 				return [rel componentsJoinedByString:@"/"];
 			}
 		}
 	}
-	return [[url filePathURL] path];
+	return [[[url filePathURL] path] stringByAbbreviatingWithTildeInPath];
 }
 
 @end

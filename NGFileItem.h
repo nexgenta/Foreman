@@ -37,7 +37,6 @@
 	BOOL mIsBundle;
 	BOOL mIsVisible;
 	NSURL *url;
-	NSURL *mParentURL;
 	NSString *mName;
 	NSString *displayName;
 	NSMutableArray *mChildren;
