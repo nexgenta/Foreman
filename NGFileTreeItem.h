@@ -33,7 +33,8 @@
 	BOOL mIncludeFiles;
 	BOOL mBundlesAsFolders;
 	NSPredicate *mPredicate;
-	NSPredicate *mAntiPredicate;	
+	NSPredicate *mAntiPredicate;
+	__weak id mParentItem;
 }
 
 + (id) fileTreeItemWithData:(id)data parent:(id)parent matching:(NSPredicate *)matchPredicate notMatching:(NSPredicate *)antiPredicate includeFiles:(BOOL)files includeInvisibles:(BOOL)invisibles bundlesAsFolders:(BOOL)expandBundles;
@@ -58,6 +59,7 @@
 - (NSArray *) children;
 - (unsigned) valence;
 - (id) representationForPropertyList;
+- (NSURL *) parentURL;
 
 @end
 

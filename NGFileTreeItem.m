@@ -27,6 +27,7 @@
 #import "NGFileTreeItem.h"
 #import "NGFileItem.h"
 #import "NGGroupFolderItem.h"
+#import "NGConstructionProject.h"
 
 @implementation NGFileTreeItem
 
@@ -81,6 +82,7 @@
 	
 	if((self = [super init]))
 	{
+		mParentItem = parent;
 		mIncludeFiles = files;
 		mIncludeInvisibles = invisibles;
 		mBundlesAsFolders = expandBundles;
@@ -109,6 +111,7 @@
 
 - (void) dealloc
 {
+	mParentItem = nil;
 	[mPredicate release];
 	[mAntiPredicate release];
 	[itemDictionary release];
@@ -210,6 +213,25 @@
 - (id) representationForPropertyList
 {
 	return itemDictionary;
+}
+
+- (NSURL *) parentURL
+{
+	NSURL *url;
+	
+	if([mParentItem isKindOfClass:[NGFileTreeItem class]])
+	{
+		return [mParentItem url];
+	}
+	if([mParentItem isKindOfClass:[NGConstructionProject class]] && (url = [mParentItem saveDestinationURL]))
+	{
+		return [url URLByDeletingLastPathComponent];
+	}
+	if([mParentItem isKindOfClass:[NSDocument class]])
+	{
+		return [[mParentItem fileURL] URLByDeletingLastPathComponent];
+	}
+	return nil;
 }
 
 @end
