@@ -25,24 +25,58 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import <Cocoa/Cocoa.h>
-#import "NGConstructionProject.h"
-#import "SS_PrefsController.h"
+#import "GeneralPrefsController.h"
 
-@interface NGForemanDelegate : NSObject <NGConstructionProjectDelegate>
+
+@implementation GeneralPrefsController
+
++ (NSArray *) preferencePanes
 {
-	SS_PrefsController *prefs;
+	return [NSArray arrayWithObjects:[[[GeneralPrefsController alloc] init] autorelease], nil];
 }
 
-- (void) launchItem:(NGFileTreeItem *)item;
+- (NSView *) paneView
+{
+	if(prefsView)
+	{
+		return prefsView;
+	}
+	if([NSBundle loadNibNamed:@"GeneralPrefs" owner:self])
+	{
+		return prefsView;
+	}
+	return nil;
+}
 
-- (IBAction) openFolder:(id)sender;
-- (IBAction) showPrefs:(id)sender;
 
-@end
+- (NSString *) paneName
+{
+	return @"General";
+}
 
-@interface NGForemanDelegate(Placeholders)
 
-- (IBAction) toggleQuickLookPreview:(id)sender;
+- (NSImage *) paneIcon
+{
+	return [[[NSImage alloc] initWithContentsOfFile:[[NSBundle bundleForClass:[self class]] pathForImageResource:@"General_Prefs"]] autorelease];
+}
+
+
+- (NSString *) paneToolTip
+{
+	return @"General Preferences";
+}
+
+
+- (BOOL) allowsHorizontalResizing
+{
+	return NO;
+}
+
+
+- (BOOL) allowsVerticalResizing
+{
+	return NO;
+}
+
 
 @end

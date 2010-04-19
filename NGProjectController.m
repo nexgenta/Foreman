@@ -37,6 +37,8 @@
 - (NSArray*) sortedChildrenOfItem:(NGFileTreeItem *) fi usingSortDescriptors:(NSArray*) sortDescriptors;
 - (void) expandRoots;
 - (NSResponder *)nextResponder;
+- (void) synchronizeWindowWithPreferences;
+- (void) preferencesDidChange:(NSNotification *)notification;
 
 - (IBAction) doubleAction:(id)sender;
 - (IBAction) keyDown:(NSEvent *)event;
@@ -56,6 +58,7 @@
 
 - (void) dealloc
 {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[mFolderTable setDataSource:nil];
 	[mFolderTable setDelegate:nil];
 	[rootItems release];
@@ -80,7 +83,8 @@
 - (void) windowDidLoad
 {
 	[super windowDidLoad];
-	[[self window] setCollectionBehavior:NSWindowCollectionBehaviorCanJoinAllSpaces];
+	[self synchronizeWindowWithPreferences];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(preferencesDidChange:) name:NSUserDefaultsDidChangeNotification object:nil];	
 	[self synchronizeWindowTitleWithDocumentName];
 	[self expandRoots];
 }
@@ -113,7 +117,35 @@
 	return YES;
 }
 
-- (void)synchronizeWindowTitleWithDocumentName
+- (void) preferencesDidChange:(NSNotification *)notification
+{
+	(void) notification;
+	
+	[self synchronizeWindowWithPreferences];
+}
+
+- (void) synchronizeWindowWithPreferences
+{
+	id win;
+	NSUserDefaults *ud;
+	
+	win = [self window];
+	ud = [NSUserDefaults standardUserDefaults];
+	if([ud boolForKey:@"projectWindowsShowOnEverySpace"])
+	{
+		[win setCollectionBehavior:NSWindowCollectionBehaviorCanJoinAllSpaces];
+	}
+	else 
+	{
+		[win setCollectionBehavior:NSWindowCollectionBehaviorDefault];		
+	}
+	if([win isKindOfClass:[NSPanel class]])
+	{
+		[win setFloatingPanel:[ud boolForKey:@"projectWindowsFloatAboveOthers"]];
+	}
+}
+
+- (void) synchronizeWindowTitleWithDocumentName
 {
 	if([[self document] fileURL])
 	{

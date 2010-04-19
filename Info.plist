@@ -158,6 +158,8 @@
 	<string>NSApplication</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>10.6</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>Copyright © 2010 Mo McRoberts. Includes SS_PrefsController by Matt Gemmell.</string>
 	<key>NGBuiltinIconDocumentTypeIcons</key>
 	<dict>
 		<key>private.group</key>

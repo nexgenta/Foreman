@@ -29,6 +29,21 @@
 
 @implementation NGForemanDelegate
 
++ (void) setupDefaults
+{
+	NSString *path;
+	NSDictionary *dict;
+	
+	path = [[NSBundle mainBundle] pathForResource:@"UserDefaults" ofType:@"plist"];
+    dict = [NSDictionary dictionaryWithContentsOfFile:path];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:dict];
+}
+
++ (void) initialize
+{
+	[self setupDefaults];
+}
+
 - (BOOL) applicationShouldOpenUntitledFile:(NSApplication *) sender
 {
 	(void) sender;
@@ -98,6 +113,19 @@
 			}
 		}
 	}
+}
+
+- (IBAction)showPrefs:(id)sender
+{
+	NSString *path;
+	
+    if(!prefs)
+	{
+        path = [[NSBundle mainBundle] builtInPlugInsPath];
+        prefs = [[SS_PrefsController alloc] initWithPanesSearchPath:path];
+		[prefs setAlwaysShowsToolbar:YES];
+    }
+	[prefs showPreferencesWindow];
 }
 
 @end
