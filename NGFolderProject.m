@@ -32,7 +32,6 @@
 
 - (BOOL)readFromURL:(NSURL *)url ofType:(NSString *)typeName error:(NSError **)outError
 {
-	NSLog(@"writeable types = %@, readable types = %@", [NSDocument writableTypes], [NSDocument readableTypes]);
 	isNativeProject = NO;
 	projectDictionary = [[NSMutableDictionary alloc] init];
 	hintURL = [url retain];
