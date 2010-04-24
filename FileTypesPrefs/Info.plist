@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>${EXECUTABLE_NAME}</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.nexgenta.foreman.${PRODUCT_NAME:rfc1034identifier}</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundlePackageType</key>
+	<string>BNDL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>1</string>
+	<key>NSPrincipalClass</key>
+	<string>FileTypesPrefsController</string>
+	<key>NGBuiltInFileTypes</key>
+	<array>
+		<dict>
+			<key>uti</key>
+			<string>public.text</string>
+			<key>defaultDescription</key>
+			<string>Text file</string>
+			<key>children</key>
+			<array>
+				<dict>
+					<key>uti</key>
+					<string>public.rtf</string>
+					<key>defaultDescription</key>
+					<string>RTF document</string>
+				</dict>
+				<dict>
+					<key>uti</key>
+					<string>public.html</string>
+					<key>defaultDescription</key>
+					<string>HTML document</string>
+				</dict>
+				<dict>
+					<key>uti</key>
+					<string>public.source-code</string>
+					<key>defaultDescription</key>
+					<string>Source code</string>
+					<key>children</key>
+					<array>
+						<dict>
+							<key>uti</key>
+							<string>public.c-source</string>
+							<key>defaultDescription</key>
+							<string>C source file</string>
+						</dict>
+						<dict>
+							<key>uti</key>
+							<string>public.c-header</string>
+							<key>defaultDescription</key>
+							<string>C header file</string>
+						</dict>
+						<dict>
+							<key>uti</key>
+							<string>public.precompiled-c-header</string>
+							<key>defaultDescription</key>
+							<string>Precompiled C header file</string>
+						</dict>
+						<dict>
+							<key>uti</key>
+							<string>public.c-plus-plus-source</string>
+							<key>defaultDescription</key>
+							<string>C++ source file</string>
+						</dict>
+						<dict>
+							<key>uti</key>
+							<string>public.c-plus-plus-header</string>
+							<key>defaultDescription</key>
+							<string>C++ header file</string>
+						</dict>
+						<dict>
+							<key>uti</key>
+							<string>public.objective-c-source</string>
+							<key>defaultDescription</key>
+							<string>Objective-C source code</string>
+						</dict>
+						<dict>
+							<key>uti</key>
+							<string>public.objective-c-plus-plus-source</string>
+							<key>defaultDescription</key>
+							<string>Objective-C++ source code</string>
+						</dict>
+						<dict>
+							<key>uti</key>
+							<string>public.objective-c-plus-plus-header</string>
+							<key>defaultDescription</key>
+							<string>Objective-C++ header file</string>
+						</dict>
+						<dict>
+							<key>uti</key>
+							<string>com.sun.java-source</string>
+							<key>defaultDescription</key>
+							<string>Java source file</string>
+						</dict>
+					</array>
+				</dict>
+				<dict>
+					<key>uti</key>
+					<string>public.xml</string>
+					<key>defaultDescription</key>
+					<string>XML text file</string>
+					<key>children</key>
+					<array/>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>uti</key>
+			<string>public.image</string>
+			<key>defaultDescription</key>
+			<string>Image file</string>
+			<key>children</key>
+			<array/>
+		</dict>
+		<dict>
+			<key>uti</key>
+			<string>public.audiovisual-content</string>
+			<key>defaultDescription</key>
+			<string>Media file</string>
+			<key>children</key>
+			<array>
+				<dict>
+					<key>uti</key>
+					<string>public.movie</string>
+					<key>defaultDescription</key>
+					<string>Movie file</string>
+					<key>children</key>
+					<array>
+						<dict>
+							<key>uti</key>
+							<string>public.video</string>
+							<key>defaultDescription</key>
+							<string>Video file (no audio)</string>
+							<key>children</key>
+							<array/>
+						</dict>
+					</array>
+				</dict>
+				<dict>
+					<key>uti</key>
+					<string>public.audio</string>
+					<key>defaultDescription</key>
+					<string>Audio file</string>
+					<key>children</key>
+					<array>
+						<dict>
+							<key>uti</key>
+							<string>public.mp3</string>
+							<key>defaultDescription</key>
+							<string>MP3 audio</string>
+							<key>children</key>
+							<array/>
+						</dict>							
+						<dict>
+							<key>uti</key>
+							<string>public.mpeg-4-audio</string>
+							<key>defaultDescription</key>
+							<string>MPEG-4 audio</string>
+							<key>children</key>
+							<array/>
+						</dict>							
+					</array>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>uti</key>
+			<string>public.image</string>
+			<key>defaultDescription</key>
+			<string>Image file</string>
+			<key>children</key>
+			<array/>
+		</dict>
+
+		<dict>
+			<key>uti</key>
+			<string>com.apple.package</string>
+			<key>defaultDescription</key>
+			<string>Document bundle</string>
+			<key>children</key>
+			<array>
+				<dict>
+					<key>uti</key>
+					<string>com.apple.rtfd</string>
+					<key>defaultDescription</key>
+					<string>RTFD document</string>
+				</dict>
+				<dict>
+					<key>uti</key>
+					<string>com.apple.interfacebuilder.document</string>
+					<key>defaultDescription</key>
+					<string>Interface Builder NIB file</string>
+				</dict>
+				<dict>
+					<key>uti</key>
+					<string>com.apple.xcode.project</string>
+					<key>defaultDescription</key>
+					<string>Xcode Project</string>
+				</dict>
+			</array>
+		</dict>
+	</array>
+</dict>
+</plist>
