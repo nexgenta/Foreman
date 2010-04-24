@@ -15,6 +15,7 @@
 			dependencies = (
 				CDE712D9117D0B900068714C /* PBXTargetDependency */,
 				CDE712DB117D0B920068714C /* PBXTargetDependency */,
+				CDAA6155117E30990032DDD1 /* PBXTargetDependency */,
 			);
 			name = Everything;
 			productName = Everything;
@@ -30,6 +31,7 @@
 		BFCE79500F590B3600C20648 /* GCIconTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BFCE794E0F590B3600C20648 /* GCIconTextFieldCell.m */; };
 		BFCE79690F590D0800C20648 /* NGForemanDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BFCE79680F590D0800C20648 /* NGForemanDelegate.m */; };
 		CD056F75117916E8004A124F /* ConstructionProject.icns in Resources */ = {isa = PBXBuildFile; fileRef = CD056F74117916E8004A124F /* ConstructionProject.icns */; };
+		CD391804117F9EA500DB4F15 /* FileTypePopupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CD391803117F9EA500DB4F15 /* FileTypePopupCell.m */; };
 		CD754539117AB9BF007AA930 /* NGXcodeProject.m in Sources */ = {isa = PBXBuildFile; fileRef = CD754538117AB9BF007AA930 /* NGXcodeProject.m */; };
 		CD754585117B1D4E007AA930 /* XcodeProject.icns in Resources */ = {isa = PBXBuildFile; fileRef = CD754584117B1D4E007AA930 /* XcodeProject.icns */; };
 		CD754667117B474E007AA930 /* Framework.tiff in Resources */ = {isa = PBXBuildFile; fileRef = CD754666117B474E007AA930 /* Framework.tiff */; };
@@ -38,6 +40,10 @@
 		CD7F58DE117A99000043F034 /* NGGroupFolderItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CD7F58DD117A99000043F034 /* NGGroupFolderItem.m */; };
 		CD7F591E117A9D0E0043F034 /* NGFileTreeItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CD7F591D117A9D0E0043F034 /* NGFileTreeItem.m */; };
 		CD7F59C0117AA3F80043F034 /* Manilla Folder.icns in Resources */ = {isa = PBXBuildFile; fileRef = CD7F59BF117AA3F80043F034 /* Manilla Folder.icns */; };
+		CDAA6165117E31730032DDD1 /* FileTypes.tiff in Resources */ = {isa = PBXBuildFile; fileRef = CDAA6164117E31730032DDD1 /* FileTypes.tiff */; };
+		CDAA616A117E319A0032DDD1 /* FileTypesPrefsController.m in Sources */ = {isa = PBXBuildFile; fileRef = CDAA6169117E319A0032DDD1 /* FileTypesPrefsController.m */; };
+		CDAA6176117E32060032DDD1 /* FileTypesPrefs.xib in Resources */ = {isa = PBXBuildFile; fileRef = CDAA6175117E32060032DDD1 /* FileTypesPrefs.xib */; };
+		CDAA61A1117E3B1E0032DDD1 /* FileTypeItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CDAA61A0117E3B1E0032DDD1 /* FileTypeItem.m */; };
 		CDB4E7E1117BADD7006E2C59 /* Blueprint.icns in Resources */ = {isa = PBXBuildFile; fileRef = CDB4E7E0117BADD7006E2C59 /* Blueprint.icns */; };
 		CDB9ED93117744D500ECC047 /* ProjectWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = CDB9ED92117744D500ECC047 /* ProjectWindow.xib */; };
 		CDC21E9D1177A0D400DBB51F /* NGFileItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CDC21E9C1177A0D400DBB51F /* NGFileItem.m */; };
@@ -53,25 +59,39 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		CDAA6154117E30990032DDD1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CDAA614E117E307C0032DDD1;
+			remoteInfo = FileTypesPrefs;
+		};
+		CDAA6156117E30A00032DDD1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8D1107260486CEB800E47090;
+			remoteInfo = Foreman;
+		};
 		CDE712D3117D0B7D0068714C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 8D1107260486CEB800E47090 /* Foreman */;
+			remoteGlobalIDString = 8D1107260486CEB800E47090;
 			remoteInfo = Foreman;
 		};
 		CDE712D8117D0B900068714C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 8D1107260486CEB800E47090 /* Foreman */;
+			remoteGlobalIDString = 8D1107260486CEB800E47090;
 			remoteInfo = Foreman;
 		};
 		CDE712DA117D0B920068714C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = CDE71287117CF8AC0068714C /* GeneralPrefs */;
+			remoteGlobalIDString = CDE71287117CF8AC0068714C;
 			remoteInfo = GeneralPrefs;
 		};
 /* End PBXContainerItemProxy section */
@@ -93,6 +113,8 @@
 		BFCE79670F590D0800C20648 /* NGForemanDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGForemanDelegate.h; sourceTree = "<group>"; };
 		BFCE79680F590D0800C20648 /* NGForemanDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NGForemanDelegate.m; sourceTree = "<group>"; };
 		CD056F74117916E8004A124F /* ConstructionProject.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = ConstructionProject.icns; sourceTree = "<group>"; };
+		CD391802117F9EA500DB4F15 /* FileTypePopupCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileTypePopupCell.h; sourceTree = "<group>"; };
+		CD391803117F9EA500DB4F15 /* FileTypePopupCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileTypePopupCell.m; sourceTree = "<group>"; };
 		CD754537117AB9BF007AA930 /* NGXcodeProject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGXcodeProject.h; sourceTree = "<group>"; };
 		CD754538117AB9BF007AA930 /* NGXcodeProject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NGXcodeProject.m; sourceTree = "<group>"; };
 		CD754584117B1D4E007AA930 /* XcodeProject.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = XcodeProject.icns; sourceTree = "<group>"; };
@@ -106,6 +128,14 @@
 		CD7F591C117A9D0E0043F034 /* NGFileTreeItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NGFileTreeItem.h; sourceTree = "<group>"; };
 		CD7F591D117A9D0E0043F034 /* NGFileTreeItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NGFileTreeItem.m; sourceTree = "<group>"; };
 		CD7F59BF117AA3F80043F034 /* Manilla Folder.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = "Manilla Folder.icns"; sourceTree = "<group>"; };
+		CDAA614F117E307C0032DDD1 /* FileTypesPrefs.preferencePane */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FileTypesPrefs.preferencePane; sourceTree = BUILT_PRODUCTS_DIR; };
+		CDAA6150117E307C0032DDD1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CDAA6164117E31730032DDD1 /* FileTypes.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = FileTypes.tiff; sourceTree = "<group>"; };
+		CDAA6168117E319A0032DDD1 /* FileTypesPrefsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileTypesPrefsController.h; sourceTree = "<group>"; };
+		CDAA6169117E319A0032DDD1 /* FileTypesPrefsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileTypesPrefsController.m; sourceTree = "<group>"; };
+		CDAA6173117E32000032DDD1 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/FileTypesPrefs.xib; sourceTree = "<group>"; };
+		CDAA619F117E3B1E0032DDD1 /* FileTypeItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileTypeItem.h; sourceTree = "<group>"; };
+		CDAA61A0117E3B1E0032DDD1 /* FileTypeItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileTypeItem.m; sourceTree = "<group>"; };
 		CDB4E7E0117BADD7006E2C59 /* Blueprint.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Blueprint.icns; sourceTree = "<group>"; };
 		CDB9ED92117744D500ECC047 /* ProjectWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProjectWindow.xib; sourceTree = "<group>"; };
 		CDC21E8F11779F9300DBB51F /* Foreman.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Foreman.pch; sourceTree = "<group>"; };
@@ -122,7 +152,7 @@
 		CDE7125B117CF59C0068714C /* SS_PrefsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SS_PrefsController.h; sourceTree = "<group>"; };
 		CDE7125C117CF59C0068714C /* SS_PrefsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SS_PrefsController.m; sourceTree = "<group>"; };
 		CDE71288117CF8AC0068714C /* GeneralPrefs.preferencePane */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GeneralPrefs.preferencePane; sourceTree = BUILT_PRODUCTS_DIR; };
-		CDE71289117CF8AC0068714C /* GeneralPrefs-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GeneralPrefs-Info.plist"; sourceTree = "<group>"; };
+		CDE71289117CF8AC0068714C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CDE71291117CF9AD0068714C /* General_Prefs.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = General_Prefs.tiff; sourceTree = "<group>"; };
 		CDE7129D117CFA430068714C /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/GeneralPrefs.xib; sourceTree = "<group>"; };
 		CDE712A3117CFB240068714C /* GeneralPrefsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralPrefsController.h; sourceTree = "<group>"; };
@@ -137,6 +167,13 @@
 			files = (
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				CDC22244117886F900DBB51F /* Quartz.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CDAA614D117E307C0032DDD1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -191,11 +228,12 @@
 			children = (
 				8D1107320486CEB800E47090 /* Foreman.app */,
 				CDE71288117CF8AC0068714C /* GeneralPrefs.preferencePane */,
+				CDAA614F117E307C0032DDD1 /* FileTypesPrefs.preferencePane */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA /* GCFolderBrowser */ = {
+		29B97314FDCFA39411CA2CEA /* Foreman */ = {
 			isa = PBXGroup;
 			children = (
 				080E96DDFE201D6D7F000001 /* Classes */,
@@ -205,7 +243,7 @@
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				CDE71282117CF88F0068714C /* Preference Panes */,
 			);
-			name = GCFolderBrowser;
+			name = Foreman;
 			sourceTree = "<group>";
 		};
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
@@ -284,24 +322,41 @@
 			name = "Document types";
 			sourceTree = "<group>";
 		};
+		CDAA614A117E30650032DDD1 /* FileTypesPrefs */ = {
+			isa = PBXGroup;
+			children = (
+				CDAA6150117E307C0032DDD1 /* Info.plist */,
+				CDAA6164117E31730032DDD1 /* FileTypes.tiff */,
+				CDAA6168117E319A0032DDD1 /* FileTypesPrefsController.h */,
+				CDAA6169117E319A0032DDD1 /* FileTypesPrefsController.m */,
+				CDAA6175117E32060032DDD1 /* FileTypesPrefs.xib */,
+				CDAA619F117E3B1E0032DDD1 /* FileTypeItem.h */,
+				CDAA61A0117E3B1E0032DDD1 /* FileTypeItem.m */,
+				CD391802117F9EA500DB4F15 /* FileTypePopupCell.h */,
+				CD391803117F9EA500DB4F15 /* FileTypePopupCell.m */,
+			);
+			path = FileTypesPrefs;
+			sourceTree = "<group>";
+		};
 		CDE71282117CF88F0068714C /* Preference Panes */ = {
 			isa = PBXGroup;
 			children = (
-				CDE71283117CF8970068714C /* General */,
+				CDE71283117CF8970068714C /* GeneralPrefs */,
+				CDAA614A117E30650032DDD1 /* FileTypesPrefs */,
 			);
 			name = "Preference Panes";
 			sourceTree = "<group>";
 		};
-		CDE71283117CF8970068714C /* General */ = {
+		CDE71283117CF8970068714C /* GeneralPrefs */ = {
 			isa = PBXGroup;
 			children = (
 				CDE71291117CF9AD0068714C /* General_Prefs.tiff */,
-				CDE71289117CF8AC0068714C /* GeneralPrefs-Info.plist */,
+				CDE71289117CF8AC0068714C /* Info.plist */,
 				CDE712A0117CFA570068714C /* GeneralPrefs.xib */,
 				CDE712A3117CFB240068714C /* GeneralPrefsController.h */,
 				CDE712A4117CFB240068714C /* GeneralPrefsController.m */,
 			);
-			name = General;
+			path = GeneralPrefs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -321,9 +376,28 @@
 			);
 			name = Foreman;
 			productInstallPath = "$(HOME)/Applications";
-			productName = GCDrawKit;
+			productName = Foreman;
 			productReference = 8D1107320486CEB800E47090 /* Foreman.app */;
 			productType = "com.apple.product-type.application";
+		};
+		CDAA614E117E307C0032DDD1 /* FileTypesPrefs */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CDAA6153117E307D0032DDD1 /* Build configuration list for PBXNativeTarget "FileTypesPrefs" */;
+			buildPhases = (
+				CDAA614B117E307C0032DDD1 /* Resources */,
+				CDAA614C117E307C0032DDD1 /* Sources */,
+				CDAA614D117E307C0032DDD1 /* Frameworks */,
+				CDAA615D117E30B30032DDD1 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CDAA6157117E30A00032DDD1 /* PBXTargetDependency */,
+			);
+			name = FileTypesPrefs;
+			productName = FileTypesPrefs;
+			productReference = CDAA614F117E307C0032DDD1 /* FileTypesPrefs.preferencePane */;
+			productType = "com.apple.product-type.bundle";
 		};
 		CDE71287117CF8AC0068714C /* GeneralPrefs */ = {
 			isa = PBXNativeTarget;
@@ -355,12 +429,13 @@
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Foreman" */;
 			compatibilityVersion = "Xcode 3.1";
 			hasScannedForEncodings = 1;
-			mainGroup = 29B97314FDCFA39411CA2CEA /* GCFolderBrowser */;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* Foreman */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				8D1107260486CEB800E47090 /* Foreman */,
 				CDE71287117CF8AC0068714C /* GeneralPrefs */,
+				CDAA614E117E307C0032DDD1 /* FileTypesPrefs */,
 				CDE712D5117D0B8C0068714C /* Everything */,
 			);
 		};
@@ -383,6 +458,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CDAA614B117E307C0032DDD1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CDAA6165117E31730032DDD1 /* FileTypes.tiff in Resources */,
+				CDAA6176117E32060032DDD1 /* FileTypesPrefs.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CDE71284117CF8AC0068714C /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -395,6 +479,20 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		CDAA615D117E30B30032DDD1 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -x\ntest -d ${BUILD_DIR}/${BUILD_STYLE}/${APP_WRAPPER_NAME}/Contents/PlugIns || mkdir ${BUILD_DIR}/${BUILD_STYLE}/${APP_WRAPPER_NAME}/Contents/PlugIns\nrm -rf ${BUILD_DIR}/${BUILD_STYLE}/${APP_WRAPPER_NAME}/Contents/PlugIns/${WRAPPER_NAME}\nexec cp -r ${BUILD_DIR}/${BUILD_STYLE}/${WRAPPER_NAME} ${BUILD_DIR}/${BUILD_STYLE}/${APP_WRAPPER_NAME}/Contents/PlugIns/${WRAPPER_NAME}";
+			showEnvVarsInLog = 0;
+		};
 		CDE712C0117D09DA0068714C /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -433,6 +531,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CDAA614C117E307C0032DDD1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CDAA616A117E319A0032DDD1 /* FileTypesPrefsController.m in Sources */,
+				CDAA61A1117E3B1E0032DDD1 /* FileTypeItem.m in Sources */,
+				CD391804117F9EA500DB4F15 /* FileTypePopupCell.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CDE71285117CF8AC0068714C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -444,6 +552,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		CDAA6155117E30990032DDD1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CDAA614E117E307C0032DDD1 /* FileTypesPrefs */;
+			targetProxy = CDAA6154117E30990032DDD1 /* PBXContainerItemProxy */;
+		};
+		CDAA6157117E30A00032DDD1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8D1107260486CEB800E47090 /* Foreman */;
+			targetProxy = CDAA6156117E30A00032DDD1 /* PBXContainerItemProxy */;
+		};
 		CDE712D4117D0B7D0068714C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 8D1107260486CEB800E47090 /* Foreman */;
@@ -476,6 +594,14 @@
 				1DDD58150DA1D0A300B32029 /* English */,
 			);
 			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+		CDAA6175117E32060032DDD1 /* FileTypesPrefs.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CDAA6173117E32000032DDD1 /* English */,
+			);
+			name = FileTypesPrefs.xib;
 			sourceTree = "<group>";
 		};
 		CDE712A0117CFA570068714C /* GeneralPrefs.xib */ = {
@@ -550,6 +676,56 @@
 			};
 			name = Release;
 		};
+		CDAA6151117E307C0032DDD1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INFOPLIST_FILE = FileTypesPrefs/Info.plist;
+				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = FileTypesPrefs;
+				WRAPPER_EXTENSION = preferencePane;
+			};
+			name = Debug;
+		};
+		CDAA6152117E307C0032DDD1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INFOPLIST_FILE = FileTypesPrefs/Info.plist;
+				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = FileTypesPrefs;
+				WRAPPER_EXTENSION = preferencePane;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 		CDE7128A117CF8AC0068714C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -561,7 +737,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
-				INFOPLIST_FILE = "GeneralPrefs-Info.plist";
+				INFOPLIST_FILE = GeneralPrefs/Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
 				OTHER_LDFLAGS = (
 					"-framework",
@@ -585,7 +761,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
-				INFOPLIST_FILE = "GeneralPrefs-Info.plist";
+				INFOPLIST_FILE = GeneralPrefs/Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
 				OTHER_LDFLAGS = (
 					"-framework",
@@ -638,6 +814,15 @@
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,
 				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CDAA6153117E307D0032DDD1 /* Build configuration list for PBXNativeTarget "FileTypesPrefs" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CDAA6151117E307C0032DDD1 /* Debug */,
+				CDAA6152117E307C0032DDD1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -124,6 +124,7 @@
         path = [[NSBundle mainBundle] builtInPlugInsPath];
         prefs = [[SS_PrefsController alloc] initWithPanesSearchPath:path];
 		[prefs setAlwaysShowsToolbar:YES];
+		[prefs setPanesOrder:[NSArray arrayWithObjects:@"General", @"File Types", nil]];
     }
 	[prefs showPreferencesWindow];
 }
